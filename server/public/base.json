@@ -1,0 +1,41 @@
+{
+    "phones": [{
+            "model": "Honor",
+            "model_phone": [{
+                    "mark": "Honor 7i",
+                    "Back_film": true,
+                    "Film_from_side": true
+                },
+                {
+                    "mark": "Honor Band 5",
+                    "Back_film": true,
+                    "Film_from_side": false
+                },
+                {
+                    "mark": "Honor 9X Premium",
+                    "Back_film": false,
+                    "Film_from_side": true
+                }
+            ]
+        },
+        {
+            "model": "xiaomi",
+            "model_phone": [{
+                    "mark": "mi9",
+                    "Back_film": true,
+                    "Film_from_side": true
+                },
+                {
+                    "mark": "mi8",
+                    "Back_film": true,
+                    "Film_from_side": false
+                },
+                {
+                    "mark": "mi9T",
+                    "Back_film": false,
+                    "Film_from_side": true
+                }
+            ]
+        }
+    ]
+}
