@@ -205,17 +205,19 @@ app.get("/getrequest", (req, res) => {
 
 app.get("/request/:_id", (req, res) => {
   const id = req.params._id;
-  Users.find({ "Request._id": id }).then((result) => {
-    result.forEach((element) => {
-      element.Request.forEach((elementRequest) => {
-        console.log(elementRequest);
-        if (elementRequest._id == id) {
-          res.status(200).send(elementRequest);
-        } else {
-          res.status(404).send("Такой заявки не существует");
-        }
+  const Requesst = Users.find({ "Request._id": id })
+    .then((result) => {
+      return result.forEach((element) => {
+        return element.Request.forEach((elementRequest) => {
+          if (elementRequest._id == id) {
+            res.status(200).send(elementRequest);
+          }
+        });
       });
-    });
-  });
+    })
+    .catch((e) => {
+      res.status(404).send('Простите... Видимо такой заявки не существует')
+      console.log(e)});
+  
 });
 app.listen(3000);
