@@ -15,14 +15,7 @@ export default {
   methods: {},
   mounted() {
     axios
-      .get("http://localhost:3000" + this.hash, {
-        body: this.hash,
-        headers: {
-            Accept: "application/json",
-            "access-Control-Allow-Origin": "http://localhost:3000/"
-          },
-          mode: "no-cors"
-      })
+      .get("http://localhost:3000" + this.hash)
       .then(res => {
         console.log(res.data);
       });

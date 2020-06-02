@@ -205,8 +205,21 @@ app.get("/getrequest", (req, res) => {
 
 app.get("/request/:_id", (req, res) => {
   console.log(req.params._id);
-  Users.find({})
-  .then(r=>{})
-  res.send("ok");
+  const id =req.params._id
+  Users.find({"Request._id":id})
+  .then(result=>{
+    result.forEach(element=>{
+      element.Request.forEach(
+        elementRequest=>{
+          console.log(elementRequest)
+          if(elementRequest._id==id){
+            res.status(200).send(elementRequest)
+          }else{
+            res.status(404).send('Такой заявки не существует')
+          }
+        }
+      )
+    })
+  })
 });
 app.listen(3000);
