@@ -1,7 +1,7 @@
 <template>
   <section>
     <form class="ui form">
-      <div class="contant">
+      <div class="main">
         <h4 class="ui dividing header">{{msg}}</h4>
         <div class="two fields">
           <div class="field">
@@ -20,7 +20,7 @@
         <button v-on:click="res" class="medium ui button">Medium</button>
       </div>
     </form>
-    <div class="contant" v-if="show">
+    <div class="main" v-if="show">
       <h3>Модель:{{mark}}</h3>
       <hr />
       <h3 v-if="Back_film">

@@ -15,9 +15,9 @@
       <p><b>TeamWeaver:</b>{{ Request.ID_TeamWeaver }}</p>
       <br />
       <div class="ui buttons">
-        <button class="ui button">Принять</button>
+        <button class="ui positive button">Принять</button>
         <div class="or"></div>
-        <button class="ui positive button">Отказаться</button>
+        <button class="ui  button">Отказаться</button>
       </div>
     </div>
     <div v-else>
