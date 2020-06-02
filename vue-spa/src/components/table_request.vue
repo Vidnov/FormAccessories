@@ -1,5 +1,5 @@
 <template>
-  <table class="ui fixed single line celled table">
+  <table class="ui single line celled table">
     <thead>
       <tr>
           <th>Name</th>
