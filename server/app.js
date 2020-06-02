@@ -204,7 +204,6 @@ app.get("/getrequest", (req, res) => {
 });
 
 app.get("/request/:_id", (req, res) => {
-  console.log(req.params._id);
   const id =req.params._id
   Users.find({"Request._id":id})
   .then(result=>{
