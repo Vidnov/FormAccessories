@@ -1,7 +1,17 @@
-var express = require('express');
-var router = express.Router();  
+var express = require("express");
+var router = express.Router();
 const Users = require("../model/Users");
 
+router.post("/login", (req, res) => {
+  console.log(req.body);
+  const {Login,Password } = req.body;
+  Users.findOne({ Mail: Login,Password:Password })
+    .then((result) => {
+      console.log(result)
+      res.status("200").send(result);
+    })
+    .catch((e) => res.status(404).send(e));
+});
 
 router.post("/deliteuser", (req, res) => {
   Users.deleteOne({ _id: req.body.id }, (err) => {
@@ -13,7 +23,6 @@ router.post("/deliteuser", (req, res) => {
     console.log(result);
   });
 });
-
 
 router.get("/getlistusers", (req, res) => {
   Users.find({})
@@ -27,53 +36,53 @@ router.get("/getlistusers", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-    const {
-      first_name,
-      last_name,
-      middle_name,
-      email,
-      password,
-      admin,
-    } = req.body.body;
-    Users.findOne({ Mail: email }, (err) => {
-      if (err) return console.log(err);
-    })
-      .then((result) => {
-        console.log("В базе нашлось", result);
-        if (result == null) {
-          Users.create({
-            First_Name: first_name,
-            Last_Name: last_name,
-            Middle_Name: middle_name,
-            Mail: email,
-            Password: password,
-            Role: admin,
+  const {
+    first_name,
+    last_name,
+    middle_name,
+    email,
+    password,
+    admin,
+  } = req.body.body;
+  Users.findOne({ Mail: email }, (err) => {
+    if (err) return console.log(err);
+  })
+    .then((result) => {
+      console.log("В базе нашлось", result);
+      if (result == null) {
+        Users.create({
+          First_Name: first_name,
+          Last_Name: last_name,
+          Middle_Name: middle_name,
+          Mail: email,
+          Password: password,
+          Role: admin,
+        })
+          .then((result) => {
+            res.send("Пользователь успешно создан");
+            console.log("Пользователь успешно создан");
           })
-            .then((result) => {
-              res.send("Пользователь успешно создан");
-              console.log("Пользователь успешно создан");
-            })
-            .catch((e) => {
-              console.error(
-                "При попытке создать пользователя произошла ошибка",
-                e
-              );
-              res.send("При попытке создать пользователя произошла ошибка");
-            });
-        } else {
-          console.log(
-            "Пользователь с почтовым ящиком " + email + " уже существует"
-          );
-          res.send("Пользователь с почтовым ящиком " + email + " уже существует");
-        }
-      })
-      .catch((e) => {
-        console.error(
-          "При попытке найти  данного  пользователя произошла ошибка",
-          e
+          .catch((e) => {
+            console.error(
+              "При попытке создать пользователя произошла ошибка",
+              e
+            );
+            res.send("При попытке создать пользователя произошла ошибка");
+          });
+      } else {
+        console.log(
+          "Пользователь с почтовым ящиком " + email + " уже существует"
         );
-        res.send("При попытке найти  данного  пользователя произошла ошибка");
-      });
-  });
-  
+        res.send("Пользователь с почтовым ящиком " + email + " уже существует");
+      }
+    })
+    .catch((e) => {
+      console.error(
+        "При попытке найти  данного  пользователя произошла ошибка",
+        e
+      );
+      res.send("При попытке найти  данного  пользователя произошла ошибка");
+    });
+});
+
 module.exports = router;

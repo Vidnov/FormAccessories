@@ -82,7 +82,7 @@ export default {
     };
   },
   mounted() {
-    axios.get("http://localhost:3000/getlistusers", {}).then(res_user => {
+    axios.get("http://localhost:3000/users/getlistusers", {}).then(res_user => {
       console.log(res_user.data);
       this.Recipients = res_user.data;
     });

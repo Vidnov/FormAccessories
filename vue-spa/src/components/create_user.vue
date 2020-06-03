@@ -45,7 +45,7 @@ export default {
   methods: {
     createUser: function() {
       axios
-        .post("http://localhost:3000/users/createuser", {
+        .post("http://localhost:3000/users/create", {
           body: this.user,
           headers: {
             Accept: "application/json",

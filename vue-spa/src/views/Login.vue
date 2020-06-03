@@ -1,17 +1,18 @@
 <template>
   <section class="login">
+    <h1>{{test}}</h1>
     <form class="ui form">
       <div class="field">
         <label>Введите Логин</label>
-        <input type="text" name="Login" placeholder="Логин" />
+        <input type="text" v-model="User.Login" placeholder="Логин" />
       </div>
       <div class="field">
         <label>Введите Пароль</label>
-        <input type="Password" name="Password" placeholder="Пароль" />
+        <input type="Password" v-model="User.Password" placeholder="Пароль" />
       </div>
       <div class="field">
         <div class="ui checkbox">
-          <input type="checkbox" tabindex="0"/>
+          <input type="checkbox" tabindex="0" />
           <label>Я являюсь сотрудником Сотикс</label>
         </div>
       </div>
@@ -26,13 +27,16 @@ export default {
   name: "login",
   data() {
     return {
-      Login:null,
-      Password:null
+      test: this.$store.state.users.test,
+      User: { Login: null, Password: null },
+      Result: null
     };
   },
-  methods:{
-    sending_data_login:function(){
-      console.log('ok')
+  methods: {
+    sending_data_login: function() {
+      this.$store.dispatch("login", this.User);
+      this.User.Login=null,
+      this.User.Password=null
     }
   }
 };
@@ -40,7 +44,7 @@ export default {
 
 
 <style lang="scss">
-.login{
+.login {
   padding-top: 300px;
   margin: 0 auto;
   width: 1200px;
