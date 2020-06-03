@@ -7,9 +7,8 @@
           <h4>Приоритет заявки</h4>
           <div class="select">
             <select v-model="Priority_Request">
-              <option value="Обычный">Обычный</option>
-              <option value="Срочно!">Срочно</option>
-              <option value="В перспективе на будущее">В перспективе на будущее</option>
+              <option value=false>Обычный</option>
+              <option value=true>Срочно</option>
             </select>
           </div>
           <h4>Точка</h4>
@@ -71,7 +70,7 @@ export default {
   name: "Sending_form",
   data() {
     return {
-      Priority_Request: null,
+      Priority_Request: false,
       Sender: null,
       Id_TeamWeaver: null,
       Recipient: null,

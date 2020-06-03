@@ -29,7 +29,8 @@
             v-bind:key="index_request"
             v-if="request"
           >
-            <td>{{ request.Priority_Request }}</td>
+            <td v-if="request.Priority_Request">Cрочно</td>
+            <td v-else>Обычный</td>
             <td>{{ request.Theme_Request }}</td>
             <td>{{ request.Id_TeamWeaver }}</td>
             <td>{{ request.Sender }}</td>
@@ -63,7 +64,7 @@ export default {
     };
   },
   mounted() {
-    Axios.get("http://localhost:3000/getrequest")
+    Axios.get("http://localhost:3000/request/allrequest")
       .then(res => {
         this.Result_request = res.data;
       })

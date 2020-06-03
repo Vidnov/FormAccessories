@@ -2,10 +2,10 @@
   <section>
     <div class="ui attached stackable menu">
   <div class="ui container">
-    <a href="#/"  class="item">
+    <a href="#/"  class="item" >
       <i class="home icon"></i> Главная
     </a>
-    <a href="#/admin" class="item">
+    <a href="#/admin" class="item" >
       <i class="grid layout icon"></i> В разработке
     </a>
     <a href="#/send/" class="item">
@@ -27,11 +27,15 @@ export default {
   name: "app",
   data() {
     return {
+      isActive:true,
       classObject: {
-        active: false
+        active: false,
+        
       },
       methods: {
-        
+        active:function(active){
+          this.class_view = a
+        }
       }
     };
   }

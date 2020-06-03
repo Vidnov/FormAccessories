@@ -30,8 +30,9 @@ const schema = new Schema({
     Request:[
         {
             Priority_Request:{
-                type:String,
-                required:true
+                type:Boolean,
+                required:true,
+                default:false
             },
             Id_TeamWeaver:{
                 type:Number,

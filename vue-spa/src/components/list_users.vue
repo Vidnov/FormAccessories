@@ -54,7 +54,7 @@ export default {
   methods: {
     deliteUser: function(id) {
       axios
-        .post("http://localhost:3000/deliteuser", {
+        .post("http://localhost:3000/users/deliteuser", {
           id: id,
           headers: {
             Accept: "application/json",
@@ -71,7 +71,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:3000/getlistusers")
+      .get("http://localhost:3000/users/getlistusers")
       .then(response => {
         console.log(response.data);
         this.result_users_list = response.data;

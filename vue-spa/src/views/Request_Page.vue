@@ -33,7 +33,7 @@ import axios from "axios";
 export default {
   name: "RequestPage",
   data() {
-    return {
+    return { 
       Message:null,
       ViewRequest: true,
       Request: {
@@ -54,7 +54,7 @@ export default {
   methods: {},
   mounted() {
     axios.get("http://localhost:3000" + this.hash).then(res => {
-      console.log(res.data)
+      console.log(this.hash)
       if (res.status == 200) {
         this.Request.Date_Request = res.data.Date_Request;
         this.Request.id = res.data._id;
