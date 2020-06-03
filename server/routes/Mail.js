@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();  
 const Users = require("../model/Users");
 
-router.post("/mail", async (req, res) => {
+router.post("/", async (req, res) => {
     // let testEmailAccount = await nodemailer.createTransport();
     const {
       Priority_Request,

@@ -69,6 +69,7 @@ export default {
   methods:{
     exit(){
       this.$store.dispatch("exit") 
+      
     }
   }
   
