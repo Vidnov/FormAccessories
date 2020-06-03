@@ -37,6 +37,7 @@ export default {
       this.$store.dispatch("login", this.User);
       this.User.Login=null,
       this.User.Password=null
+      this.$router.push("/");
     }
   }
 };

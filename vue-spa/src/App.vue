@@ -20,7 +20,7 @@
       </div>
     </div>
     <div v-else-if="RoleUser==false" class="ui attached stackable menu">
-      <div class="ui container">123
+      <div class="ui container">
         <a href="#/" class="item">
           <i class="home icon"></i> Мои заявки
         </a>
@@ -69,7 +69,7 @@ export default {
   methods:{
     exit(){
       this.$store.dispatch("exit") 
-      
+      this.$router.push("/");
     }
   }
   
