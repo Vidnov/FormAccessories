@@ -2,6 +2,19 @@ var express = require("express");
 var router = express.Router();
 const Users = require("../model/Users");
 
+router.post('/get_user_request',(req,res)=>{
+  console.log(req.body)
+  Users.find({Mail:req.body.user})
+  .then(result=>{
+    if(result==""){
+      res.status(404).send('Ошибка! не смогли найти такого пользователя') 
+    }
+    res.status(200).send(result)  
+  })
+  .catch(e=> res.status(404).send('Ошибка! не смогли найти такого пользователя') )
+  
+})
+
 router.get("/allrequest", (req, res) => {
   Users.find().then((r) => {
     res.send(r);
