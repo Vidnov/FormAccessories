@@ -58,6 +58,14 @@ const schema = new Schema({
             Date_Request:{
                 type:Date,
                 default:Date.now()
+            },
+            Date_execution:{
+                type:Date,
+                default:Date.now()
+            },
+            Status:{
+                type:String,
+                default:'В работе'
             }
         }
     ]
