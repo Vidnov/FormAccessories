@@ -3,7 +3,7 @@ var router = express.Router();
 const Users = require("../model/Users");
 
 router.post("/login", (req, res) => {
-  console.log(req.body);
+ // console.log(req.body);
   const {Login,Password } = req.body;
   Users.findOne({ Mail: Login,Password:Password })
     .then((result) => {

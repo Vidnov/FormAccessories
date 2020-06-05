@@ -53,7 +53,7 @@ export default {
         method: "post",
         url: "http://localhost:3000/request/get_user_request",
         data: {
-          user: localStorage.HelpDeskMail
+          user: 'n.vidnov@sotiks.net'
         }
       })
         .then(res => {

@@ -3,11 +3,12 @@ var router = express.Router();
 const Users = require("../model/Users");
 
 router.post("/get_user_request", (req, res) => {
-  console.log("123" + req.body.user);
+  console.log(req.body.user);
 
   Users.find({ Mail: req.body.user })
     .then((result) => {
       if (result == "") {
+        console.log('я ничего не получил')
         res.status(404).send("Ошибка! не смогли найти такого пользователя");
       } else {
         res.status(200).send(result);
