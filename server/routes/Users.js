@@ -7,7 +7,7 @@ router.post("/login", (req, res) => {
   const {Login,Password } = req.body;
   Users.findOne({ Mail: Login,Password:Password })
     .then((result) => {
-      console.log(result)
+     // console.log(result)
       res.status("200").send(result);
     })
     .catch((e) => res.status(404).send(e));
@@ -20,7 +20,7 @@ router.post("/deliteuser", (req, res) => {
     }
   }).then((result) => {
     Users.find({}).then((result) => res.send(result));
-    console.log(result);
+   // console.log(result);
   });
 });
 
@@ -48,7 +48,7 @@ router.post("/create", (req, res) => {
     if (err) return console.log(err);
   })
     .then((result) => {
-      console.log("В базе нашлось", result);
+     // console.log("В базе нашлось", result);
       if (result == null) {
         Users.create({
           First_Name: first_name,
@@ -60,7 +60,7 @@ router.post("/create", (req, res) => {
         })
           .then((result) => {
             res.send("Пользователь успешно создан");
-            console.log("Пользователь успешно создан");
+           // console.log("Пользователь успешно создан");
           })
           .catch((e) => {
             console.error(
@@ -70,9 +70,9 @@ router.post("/create", (req, res) => {
             res.send("При попытке создать пользователя произошла ошибка");
           });
       } else {
-        console.log(
-          "Пользователь с почтовым ящиком " + email + " уже существует"
-        );
+        // console.log(
+        //   "Пользователь с почтовым ящиком " + email + " уже существует"
+        // );
         res.send("Пользователь с почтовым ящиком " + email + " уже существует");
       }
     })

@@ -16,6 +16,7 @@ export default {
     exit({ commit }) {
       localStorage.clear();
       commit("set", { type: "Role", items: null });
+      
     },
 
     login({ commit }, User) {

@@ -37,7 +37,7 @@ export default {
       this.$store.dispatch("login", this.User);
       this.User.Login=null,
       this.User.Password=null
-      this.$router.push("/");
+      this.$router.push("/").catch(err => console.err(err));
     }
   }
 };

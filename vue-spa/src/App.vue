@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div v-if="RoleUser" class="ui attached stackable menu">
+    <div v-if="RoleUser=='true'" class="ui attached stackable menu">
       <div class="ui container">
         <a href="#/" class="item">
           <i class="home icon"></i> Главная
@@ -19,7 +19,7 @@
         </a>
       </div>
     </div>
-    <div v-else-if="RoleUser==false" class="ui attached stackable menu">
+    <div v-else-if="RoleUser=='false'" class="ui attached stackable menu">
       <div class="ui container">
         <a href="#/" class="item">
           <i class="home icon"></i> Мои заявки
@@ -72,7 +72,6 @@ export default {
       this.$router.push("/");
     }
   }
-  
 };
 </script>
 

@@ -2,33 +2,39 @@ var express = require("express");
 var router = express.Router();
 const Users = require("../model/Users");
 
-router.post('/get_user_request',(req,res)=>{
-  console.log(req.body)
-  Users.find({Mail:req.body.user})
-  .then(result=>{
-    if(result==""){
-      res.status(404).send('Ошибка! не смогли найти такого пользователя') 
-    }
-    res.status(200).send(result)  
-  })
-  .catch(e=> res.status(404).send('Ошибка! не смогли найти такого пользователя') )
-  
-})
+router.post("/get_user_request", (req, res) => {
+  console.log("123" + req.body.user);
+
+  Users.find({ Mail: req.body.user })
+    .then((result) => {
+      if (result == "") {
+        res.status(404).send("Ошибка! не смогли найти такого пользователя");
+      } else {
+        res.status(200).send(result);
+      }
+    })
+    .catch((e) => {
+      //console.log(e)
+      res.status(404).send("Ошибка! не смогли найти такого пользователя");
+    });
+});
 
 router.get("/allrequest", (req, res) => {
-  Users.find().then((r) => {
-    res.send(r);
-  });
+  Users.find()
+    .then((r) => {
+      res.send(r);
+    })
+    .catch((e) => console.error(e));
 });
 router.post("/delete/:_id", (req, res) => {
   const id = req.body.body;
-  console.log(id)
+  //console.log(id);
   Users.findOne({ "Request._id": id })
     .then((result) => {
-      result.Request.forEach((el,index) => {
-        if(el._id==id){
-          console.log(result.Request[index]) 
-          result.Request.splice(index,1)
+      result.Request.forEach((el, index) => {
+        if (el._id == id) {
+          //console.log(result.Request[index]);
+          result.Request.splice(index, 1);
         }
       });
       result.save(function (err, doc) {
