@@ -66,6 +66,7 @@ export default {
       return this.$store.getters.getRole;
     }
   },
+ 
   methods:{
     exit(){
       this.$store.dispatch("exit") 
@@ -77,12 +78,8 @@ export default {
 
 
 <style scope lang="scss">
-.contant {
-  //padding: 50px;
-}
+
 section {
   text-align: center;
-  // width: 1200px;
-  // margin: 0 auto;
 }
 </style>

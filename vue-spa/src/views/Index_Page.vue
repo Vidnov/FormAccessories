@@ -1,6 +1,6 @@
 <template>
   <section>
-    
+  Vuex {{getMail}}
     <div v-if="getErr" class="ui negative message">
       <i class="close icon"></i>
       <div class="header">Ошибка</div>
@@ -65,20 +65,18 @@ export default {
     },
     getErr(state) {
       return this.$store.getters.getErr
-    },
-    getMail(state){
-      return this.$store.getters.getMail
     }
 
   },
   data() {
     return {
-      // mail: localStorage.HelpDeskMail,
       url:""
     };
   },
   mounted() {
-    this.$store.dispatch("get_request_user");
+    console.log('123'+this.$store.users)
+    this.$store.dispatch("get_request_user",this.$store.getters.getMail);
+    
   },
   methods: {
      viewRequest: function(id) {

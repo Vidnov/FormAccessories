@@ -10,13 +10,19 @@ export default {
   getters: {
     getRole(state) {
       return state.Role;
+    },
+    getMail(state) {
+      return state.Mail;
     }
   },
   actions: {
     exit({ commit }) {
       localStorage.clear();
       commit("set", { type: "Role", items: null });
-      
+      commit("set", { type: "Mail", items: null });
+      commit("set", { type: "First_Name", items: null });
+      commit("set", { type: "Last_Name", items: null });
+      commit("set", { type: "Middle_Name", items: null });
     },
 
     login({ commit }, User) {
@@ -35,7 +41,9 @@ export default {
             localStorage.HelpDeskFirstName = res.data.First_Name;
             localStorage.HelpDeskLastName = res.data.Last_Name;
             localStorage.HelpDeskMiddleName = res.data.Middle_Name;
+
             commit("del", { type: "Role", items: res.data.Role });
+            commit("del", { type: "Mail", items: res.data.Mail });
           }
         })
         .catch(e => console.log(e));

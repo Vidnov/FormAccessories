@@ -4,7 +4,7 @@ export default {
     Result: null,
     RequestZero: false,
     Err: null,
-    Mail:null
+    Mail:localStorage.HelpDeskMail
   },
   getters: {
     getResult(state) {
@@ -15,45 +15,39 @@ export default {
     },
     getErr(state) {
       return state.Err;
-    },
-    getMail(state) {
-      return state.Mail;
     }
   },
   actions: {
     exit({commit}){
         commit("del", { type: "RequestZero", items: true });
+        commit("del", { type: "Mail", items: null });
     },
-    login({commit},User){
-        axios({
-            method: "post",
-            url: "http://localhost:3000/users/login",
-            data: {
-              Login: User.Login,
-              Password: User.Password
-            }
-          })
-            .then(res => {
-              if (res.data != "") {
-                commit("del", { type: "Role", items: res.data.Mail });
-              }
-            })
-            .catch(e => console.log(e));
-
-
-
-
-        commit("set", { type: "Mail", items:localStorage.HelpDeskMail });
+    // login({commit},User){
+    //     axios({
+    //         method: "post",
+    //         url: "http://localhost:3000/users/login",
+    //         data: {
+    //           Login: User.Login,
+    //           Password: User.Password
+    //         }
+    //       })
+    //         .then(res => {
+    //           if (res.data != "") {
+    //             // commit("del", { type: "Mail", items: res.data.Mail });
+    //           }
+    //         })
+    //         .catch(e => console.log(e));
+    //     //  commit("set", { type: "Mail", items:localStorage.HelpDeskMail });
         
-    },
+    // },
 
-    get_request_user({ commit }) {
-
+    get_request_user({ commit },User) {
+      // console.log(User)
       axios({
         method: "post",
         url: "http://localhost:3000/request/get_user_request",
         data: {
-          user: 'n.vidnov@sotiks.net'
+          user:User
         }
       })
         .then(res => {

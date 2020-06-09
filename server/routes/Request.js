@@ -8,14 +8,13 @@ router.post("/get_user_request", (req, res) => {
   Users.find({ Mail: req.body.user })
     .then((result) => {
       if (result == "") {
-        console.log('я ничего не получил')
+        console.log("я ничего не получил");
         res.status(404).send("Ошибка! не смогли найти такого пользователя");
       } else {
         res.status(200).send(result);
       }
     })
     .catch((e) => {
-      //console.log(e)
       res.status(404).send("Ошибка! не смогли найти такого пользователя");
     });
 });
@@ -29,12 +28,11 @@ router.get("/allrequest", (req, res) => {
 });
 router.post("/delete/:_id", (req, res) => {
   const id = req.body.body;
-  //console.log(id);
+
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((el, index) => {
         if (el._id == id) {
-          //console.log(result.Request[index]);
           result.Request.splice(index, 1);
         }
       });
