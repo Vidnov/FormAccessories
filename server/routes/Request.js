@@ -3,8 +3,7 @@ var router = express.Router();
 const Users = require("../model/Users");
 
 router.post("/get_user_request", (req, res) => {
-  console.log(req.body.user);
-
+ console.log(req.body)
   Users.find({ Mail: req.body.user })
     .then((result) => {
       if (result == "") {

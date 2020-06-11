@@ -1,6 +1,5 @@
 <template>
   <section>
-  Vuex {{getMail}}
     <div v-if="getErr" class="ui negative message">
       <i class="close icon"></i>
       <div class="header">Ошибка</div>
@@ -13,8 +12,9 @@
         <div class="sub header">На данный момент у вас нет заявок</div>
       </div>
     </h2>
+    {{result}}
     
-    <table v-else-if="!getErr" class="ui violet table">
+    <table class="ui violet table">
       <thead>
         <tr>
           <th>id</th>
@@ -29,6 +29,7 @@
         </tr>
       </thead>
       <tbody v-for="(el,index) in result" v-bind:key="index">
+        123{{el.Request}}
         <tr v-for="(request,indexRequest) in el.Request" v-bind:key="indexRequest">
           <td>{{request._id}}</td>
           <td v-if="request.Priority_Request">Срочно</td>
@@ -74,7 +75,7 @@ export default {
     };
   },
   mounted() {
-    console.log('123'+this.$store.users)
+    console.log('Пытаюсь отобразить '+this.$store.getters.getResult)
     this.$store.dispatch("get_request_user",this.$store.getters.getMail);
     
   },

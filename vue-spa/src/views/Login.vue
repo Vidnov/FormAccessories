@@ -1,6 +1,5 @@
 <template>
   <section class="login">
-    <h1>{{test}}</h1>
     <form class="ui form">
       <div class="field">
         <label>Введите Логин</label>
@@ -27,7 +26,6 @@ export default {
   name: "login",
   data() {
     return {
-      test: this.$store.state.users.test,
       User: { Login: null, Password: null },
       Result: null
     };
@@ -35,6 +33,7 @@ export default {
   methods: {
     sending_data_login: function() {
       this.$store.dispatch("login", this.User);
+      this.$store.dispatch("get_request_user",this.User);
       this.User.Login=null,
       this.User.Password=null
       this.$router.push("/").catch(err => console.err(err));

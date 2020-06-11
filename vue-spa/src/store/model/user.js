@@ -5,7 +5,8 @@ export default {
     Role: localStorage.HelpDeskRole,
     First_Name: localStorage.HelpDeskFirstName,
     Last_Name: localStorage.HelpDeskLastName,
-    Middle_Name: localStorage.HelpDeskMiddleName
+    Middle_Name: localStorage.HelpDeskMiddleName,
+    Result:null
   },
   getters: {
     getRole(state) {
@@ -13,6 +14,9 @@ export default {
     },
     getMail(state) {
       return state.Mail;
+    },
+    getResult(state){
+      return state.Result
     }
   },
   actions: {
@@ -41,9 +45,25 @@ export default {
             localStorage.HelpDeskFirstName = res.data.First_Name;
             localStorage.HelpDeskLastName = res.data.Last_Name;
             localStorage.HelpDeskMiddleName = res.data.Middle_Name;
-
+            
             commit("del", { type: "Role", items: res.data.Role });
             commit("del", { type: "Mail", items: res.data.Mail });
+            axios({
+              method:"post",
+              url: "http://localhost:3000/request/get_user_request",
+              data: {
+                user:res.data.Mail
+              }
+            })
+            .then(r=>{
+                r.data.forEach(element => {
+                  console.log('пытаюсь передать во вьюикс ', element)
+                  commit("set", { type: "Result", items: element});
+                });
+            })
+            .catch(e=>{
+              console.log(e)
+            })
           }
         })
         .catch(e => console.log(e));
