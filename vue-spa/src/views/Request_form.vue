@@ -7,13 +7,13 @@
           <h4>Приоритет заявки</h4>
           <div class="select">
             <select v-model="Priority_Request">
-              <option value=false>Обычный</option>
-              <option value=true>Срочно</option>
+              <option value="false">Обычный</option>
+              <option value="true">Срочно</option>
             </select>
           </div>
           <h4>Точка</h4>
           <div class="select">
-            <select v-model="Sender">
+            <select class="ui fluid dropdown" v-model="Sender">
               <option value="Шуя Васелевского">Шуя Васелевского</option>
               <option value="Кострома Ткачей">Кострома Ткачей</option>
               <option value="Ленина 7">Ленина 7</option>
@@ -47,6 +47,7 @@
                   placeholder="ID teamweaver"
                 />
               </div>
+              <input type="date" name="calendar">
               <h4>Суть проблемы</h4>
               <div class="field">
                 <label>Text</label>
@@ -54,13 +55,17 @@
               </div>
             </div>
           </div>
+          
         </div>
+        
         <br />
         <button v-on:click="send" class="positive ui button">Отправить запрос</button>
       </div>
+      
       <h1 v-if="Result_Request">{{Result_Request}}</h1>
       <h1 class="error" v-if="Error_Request">{{Error_Request}}</h1>
     </div>
+    
   </section>
 </template>
 

@@ -1,8 +1,8 @@
 <template>
       <div  v-if="role===null||role===undefined||role===object" class="ui attached stackable menu">
       <div class="ui container">
-        <a href="#/" class="item">
-          <i class="home icon"></i> Главная
+        <a href="#/send/" class="item">
+          <i class="mail icon"></i> Заявка
         </a>
         <div class="right item">
           <a href="#/login/" class="item">

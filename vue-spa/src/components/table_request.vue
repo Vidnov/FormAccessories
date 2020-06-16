@@ -26,13 +26,12 @@
           <tr
             v-for="(request, index_request) in user.Request"
             v-bind:key="index_request"
-            v-if="request"
           >
             <td v-if="request.Priority_Request">Cрочно</td>
             <td v-else>Обычный</td>
             <td>{{ request.Status }}</td>
             <td>{{ request.Theme_Request }}</td>
-
+            <td>{{ request.Id_TeamWeaver }}</td>
             <td>{{ request.Sender }}</td>
             <td>{{ request.Recipient }}</td>
             <td>{{ request.Date_Request }}</td>
