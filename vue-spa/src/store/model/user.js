@@ -6,7 +6,9 @@ export default {
     First_Name: localStorage.HelpDeskFirstName,
     Last_Name: localStorage.HelpDeskLastName,
     Middle_Name: localStorage.HelpDeskMiddleName,
-    Result:null
+    Result:null,
+    RequestZero: false,
+    Err: null,
   },
   getters: {
     getRole(state) {
@@ -27,6 +29,7 @@ export default {
       commit("set", { type: "First_Name", items: null });
       commit("set", { type: "Last_Name", items: null });
       commit("set", { type: "Middle_Name", items: null });
+      commit("set", { type: "Result", items: null });
     },
 
     login({ commit }, User) {
@@ -57,7 +60,6 @@ export default {
             })
             .then(r=>{
                 r.data.forEach(element => {
-                  console.log('пытаюсь передать во вьюикс ', element)
                   commit("set", { type: "Result", items: element});
                 });
             })
@@ -67,6 +69,33 @@ export default {
           }
         })
         .catch(e => console.log(e));
+    },
+    get_request_user({ commit }, User) {
+     
+      axios({
+        method: "post",
+        url: "http://localhost:3000/request/get_user_request",
+        data: {
+          user: User
+        }
+      })
+        .then(res => {
+          res.data.forEach(element => {
+            if (element.Request == "") {
+              
+              commit("del", { type: "RequestZero", items: true });
+
+            }else{
+              commit("up", { type: "Result", items: element });
+
+              
+            }
+          });
+        })
+        .catch(e => {
+          this.err = e;
+          commit("err", { type: "Err", items: e });
+        });
     }
   },
   mutations: {
@@ -76,6 +105,10 @@ export default {
 
     del(state, { type, items }) {
       state[type] = items;
+    },
+    up(state, { type, items }) {
+      state[type] = items;
     }
+
   }
 };

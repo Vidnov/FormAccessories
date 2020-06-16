@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <h1></h1>
+    <h1>123{{RoleUser}}</h1>
     <router-view />
   </section>
 </template>
@@ -66,11 +66,13 @@ export default {
       return this.$store.getters.getRole;
     }
   },
- 
+  mounted(){
+      return this.$store.getters.getRole;
+  },
   methods:{
     exit(){
       this.$store.dispatch("exit") 
-      this.$router.push("/");
+      this.$router.push("/login");
     }
   }
 };
