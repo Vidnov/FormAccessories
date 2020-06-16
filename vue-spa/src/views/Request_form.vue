@@ -47,7 +47,7 @@
                   placeholder="ID teamweaver"
                 />
               </div>
-              <input type="date" name="calendar">
+             
               <h4>Суть проблемы</h4>
               <div class="field">
                 <label>Text</label>

@@ -1,25 +1,39 @@
 <template>
   <section>
     <div
-      v-if="ViewRequest"
+      v-if="ViewRequest&Request.Complite===false"
       class="ui raised very padded text container segment"
     >
       <h2 class="ui header">
-        <i v-if="Request.Priority_Request" class="hotjar  icon"></i>
+        <i v-if="Request.Priority_Request" class="hotjar icon"></i>
       </h2>
       <h2 class="ui header">Заявка №{{ Request.id }}</h2>
       <h3>Тема: {{ Request.Theme_Request }}</h3>
-      <p><b>Дата создания:</b>{{ Request.Date_Request }}</p>
-      <p><b>Отправитель:</b>{{ Request.Sender }}</p>
-      <p><b>Текст заявления:</b><br />{{ Request.Text_Request }}</p>
-      <p><b>TeamWeaver:</b>{{ Request.ID_TeamWeaver }}</p>
+      <p>
+        <b>Дата создания:</b>
+        {{ Request.Date_Request }}
+      </p>
+      <p>
+        <b>Отправитель:</b>
+        {{ Request.Sender }}
+      </p>
+      <p>
+        <b>Текст заявления:</b>
+        <br />
+        {{ Request.Text_Request }}
+      </p>
+      <p>
+        <b>TeamWeaver:</b>
+        {{ Request.ID_TeamWeaver }}
+      </p>
       <br />
       <div class="ui buttons">
-        <button class="ui positive button">Принять</button>
+        <button class="ui positive button" v-on:click="accept(Request.Complite)">Принять</button>
         <div class="or"></div>
-        <button class="ui  button">Отказаться</button>
+        <button class="ui button">Отказаться</button>
       </div>
     </div>
+    <calendar v-else-if="Request.Complite===true" v-bind:id="Request.id"/>
     <div v-else>
       <div class="ui negative message">
         <div class="header">{{Message}}</div>
@@ -30,11 +44,12 @@
 </template>
 <script>
 import axios from "axios";
+import calendar from "../components/calendar";
 export default {
   name: "RequestPage",
   data() {
-    return { 
-      Message:null,
+    return {
+      Message: null,
       ViewRequest: true,
       Request: {
         Date_Request: null,
@@ -44,36 +59,48 @@ export default {
         Sender: null,
         Text_Request: null,
         Theme_Request: null,
-        id: null
+        id: null,
+        Complite: false
       },
       protocol: window.location.protocol,
       host: window.location.host,
       hash: window.location.hash.slice(1)
     };
   },
-  methods: {},
+  methods: {
+     accept:function(Complite) {
+      this.Request.Complite= !Complite
+     }
+  },
+  components: {
+    calendar
+  },
   mounted() {
-    axios.get("http://localhost:3000" + this.hash).then(res => {
-      console.log(this.hash)
-      if (res.status == 200) {
-        this.Request.Date_Request = res.data.Date_Request;
-        this.Request.id = res.data._id;
-        this.Request.ID_TeamWeaver = res.data.Id_TeamWeaver;
-        this.Request.Priority_Request = res.data.Priority_Request;
-        this.Request.Recipiend = res.data.Recipient;
-        this.Request.Sender = res.data.Sender;
-        this.Request.Text_Request = res.data.Text_Request;
-        this.Request.Theme_Request = res.data.Theme_Request;
-      } else {
+    axios
+      .get("http://localhost:3000" + this.hash)
+      .then(res => {
+        console.log(this.hash);
+        if (res.status == 200) {
+          this.Request.Date_Request = res.data.Date_Request;
+          this.Request.id = res.data._id;
+          this.Request.ID_TeamWeaver = res.data.Id_TeamWeaver;
+          this.Request.Priority_Request = res.data.Priority_Request;
+          this.Request.Recipiend = res.data.Recipient;
+          this.Request.Sender = res.data.Sender;
+          this.Request.Text_Request = res.data.Text_Request;
+          this.Request.Theme_Request = res.data.Theme_Request;
+        } else {
+          this.ViewRequest = false;
+          this.Message = res.data;
+        }
+      })
+      .catch(e => {
         this.ViewRequest = false;
-        this.Message=res.data
-      }
-    })
-    .catch(e=>{
-       this.ViewRequest = false;
-      console.log(e)
-      this.Message=e
-    });
+        console.log(e);
+        this.Message = e;
+      });
   }
 };
 </script>
+<style  scoped>
+</style>

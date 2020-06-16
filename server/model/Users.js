@@ -63,10 +63,18 @@ const schema = new Schema({
                 type:Date,
                 default:Date.now()
             },
-            Status:{
+            Status:{               
                 type:String,
                 default:'В работе'
-            }
+            },
+            Completion_date:{ // Дата планируемого выполнения 
+                type:Date
+            },
+            Seen:{          // Просмотрена ли заявка
+                type:Boolean,
+                default:false
+            },
+            
         }
     ]
 
