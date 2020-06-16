@@ -1,86 +1,46 @@
 <template>
   <section>
-    <div v-if="RoleUser=='true'" class="ui attached stackable menu">
-      <div class="ui container">
-        <a href="#/" class="item">
-          <i class="home icon"></i> Главная
-        </a>
-
-        <a href="#/send/" class="item">
-          <i class="mail icon"></i> Заявка
-        </a>
-        <div class="right item">
-          <a @click="exit()"  class="item">
-            <i class="edit icon"></i> Выход
-          </a>
-        </div>
-        <a href="#/admin" class="item">
-          <i class="grid layout icon"></i> Админка
-        </a>
-      </div>
-    </div>
-    <div v-else-if="RoleUser=='false'" class="ui attached stackable menu">
-      <div class="ui container">
-        <a href="#/" class="item">
-          <i class="home icon"></i> Мои заявки
-        </a>
-        <a href="#/send/" class="item">
-          <i class="mail icon"></i> Создать Заявку
-        </a>
-        <div class="right item">
-          <a @click="exit()" class="item">
-            <i class="edit icon"></i> Выход
-          </a>
-          <div class="ui input">
-            <input type="text" placeholder="Search..." />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-else-if="RoleUser==null" class="ui attached stackable menu">
-      <div class="ui container">
-        <a href="#/" class="item">
-          <i class="home icon"></i> Главная
-        </a>
-        <div class="right item">
-          <a href="#/login/" class="item">
-            <i class="edit icon"></i> Вход
-          </a>
-          <div class="ui input">
-            <input type="text" placeholder="Search..." />
-          </div>
-        </div>
-      </div>
-    </div>
-    <h1>123{{RoleUser}}</h1>
+   <navbarAdmin v-bind:roleAdmin="getRole" />
+    <navbarUser v-bind:roleUser="getRole" />
+    <navbar v-bind:role="getRole"/>
+  
     <router-view />
   </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import navbar from "./components/navbar";
+import navbarAdmin from "./components/navbar_admin";
+import navbarUser from "./components/navbar_user";
 import axios from "axios";
 export default {
   name: "app",
-  computed:{
-    RoleUser(){
-      return this.$store.getters.getRole;
+  computed: {
+    ...mapGetters([
+      'getRole'
+    ])
+  },
+  mounted() {
+  },
+  data(){
+    return{
+
     }
   },
-  mounted(){
-      return this.$store.getters.getRole;
+  methods: {
+
   },
-  methods:{
-    exit(){
-      this.$store.dispatch("exit") 
-      this.$router.push("/login");
-    }
-  }
+   components: {
+    navbar,
+    navbarAdmin,
+    navbarUser
+  },
 };
 </script>
 
 
 <style scope lang="scss">
-
 section {
   text-align: center;
 }

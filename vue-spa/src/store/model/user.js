@@ -6,9 +6,9 @@ export default {
     First_Name: localStorage.HelpDeskFirstName,
     Last_Name: localStorage.HelpDeskLastName,
     Middle_Name: localStorage.HelpDeskMiddleName,
-    Result:null,
+    Result: null,
     RequestZero: false,
-    Err: null,
+    Err: null
   },
   getters: {
     getRole(state) {
@@ -17,8 +17,8 @@ export default {
     getMail(state) {
       return state.Mail;
     },
-    getResult(state){
-      return state.Result
+    getResult(state) {
+      return state.Result;
     }
   },
   actions: {
@@ -48,30 +48,29 @@ export default {
             localStorage.HelpDeskFirstName = res.data.First_Name;
             localStorage.HelpDeskLastName = res.data.Last_Name;
             localStorage.HelpDeskMiddleName = res.data.Middle_Name;
-            
+
             commit("del", { type: "Role", items: res.data.Role });
             commit("del", { type: "Mail", items: res.data.Mail });
             axios({
-              method:"post",
+              method: "post",
               url: "http://localhost:3000/request/get_user_request",
               data: {
-                user:res.data.Mail
+                user: res.data.Mail
               }
             })
-            .then(r=>{
+              .then(r => {
                 r.data.forEach(element => {
-                  commit("set", { type: "Result", items: element});
+                  commit("set", { type: "Result", items: element });
                 });
-            })
-            .catch(e=>{
-              console.log(e)
-            })
+              })
+              .catch(e => {
+                console.log(e);
+              });
           }
         })
         .catch(e => console.log(e));
     },
     get_request_user({ commit }, User) {
-     
       axios({
         method: "post",
         url: "http://localhost:3000/request/get_user_request",
@@ -82,13 +81,11 @@ export default {
         .then(res => {
           res.data.forEach(element => {
             if (element.Request == "") {
-              
               commit("del", { type: "RequestZero", items: true });
-
-            }else{
+            } else {
               commit("up", { type: "Result", items: element });
 
-              
+            
             }
           });
         })
@@ -109,6 +106,5 @@ export default {
     up(state, { type, items }) {
       state[type] = items;
     }
-
   }
 };

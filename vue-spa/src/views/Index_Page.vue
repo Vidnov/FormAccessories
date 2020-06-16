@@ -4,8 +4,8 @@
       <i class="close icon"></i>
       <div class="header">Ошибка</div>
       <p>{{getErr}}</p>
-    </div> -->
-    
+    </div>-->
+
     <h2 v-if="result.Request==''" class="ui icon header">
       <i class="settings icon"></i>
       <div class="content">
@@ -13,7 +13,7 @@
         <div class="sub header">На данный момент у вас нет заявок</div>
       </div>
     </h2>
-     
+
     <table v-else class="ui violet table">
       <thead>
         <tr>
@@ -33,9 +33,9 @@
           <td>{{request._id}}</td>
           <td v-if="request.Priority_Request">Срочно</td>
           <td v-else>Обычный</td>
-            <td>{{request.Status}}</td>
+          <td>{{request.Status}}</td>
           <td>{{request.Theme_Request}}</td>
-        
+
           <td>{{request.Id_TeamWeaver}}</td>
           <td>{{request.Sender}}</td>
           <td>{{request.Recipient}}</td>
@@ -48,7 +48,6 @@
         </tr>
       </tbody>
     </table>
-    <h1>{{result.Request}}111</h1>
   </section>
 </template>
 
@@ -56,32 +55,25 @@
 import axios from "axios";
 export default {
   name: "Index",
-  
-  computed:{
+
+  computed: {
     result() {
-      return this.$store.getters.getResult
-    },
-    RequestZero() {
-      return this.$store.getters.getRequestZero
+      return this.$store.getters.getResult;
     },
     getErr() {
-      return this.$store.getters.getErr
+      return this.$store.getters.getErr;
     }
-
   },
   data() {
     return {
-      url:""
-
+      url: ""
     };
   },
   mounted() {
-  
-   this.$store.dispatch("get_request_user",this.$store.getters.getMail);
-    
+    this.$store.dispatch("get_request_user", this.$store.getters.getMail);
   },
   methods: {
-     viewRequest: function(id) {
+    viewRequest: function(id) {
       this.url = "#/request/" + id;
     }
   }

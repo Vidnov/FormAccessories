@@ -37,6 +37,7 @@ export default {
       this.User.Login=null,
       this.User.Password=null
       this.$router.push("/").catch(err => console.err(err));
+     
     }
   }
 };
