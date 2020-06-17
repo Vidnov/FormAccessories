@@ -10,34 +10,61 @@
       </div>
       <div class="button_block">
         <div class="ui buttons">
-          <button class="ui positive button" v-on:click="send_confirmation(result)">Save</button>
+          <button class="ui positive button" v-on:click="send_confirmation(id)">Save</button>
           <div class="or"></div>
           <button @click="viewRequest()" class="ui red button">Cancel</button>
         </div>
       </div>
     </div>
-    <div v-else-if="dateCompliteRequest != null" class="ui success message message_block">
+    <div v-else-if="result!= null" class="ui success message message_block">
       <i class="close icon" v-on:click="close_message()"></i>
-      <div class="header">Ваша заявка отредактирована.</div>
-      <p>Вы можете изменить ее обратившись к администратору сайта</p>
+      <div class="header">{{result}}</div>
+      <p>Вы можете изменить заявку обратившись к администратору сайта</p>
     </div>
+    <errorMessage v-if="error" v-bind:error_message="error" />
   </section>
 </template>
 
 <script>
+import axios from "axios";
+import errorMessage from "../components/error";
 export default {
   name: "calendar",
   data() {
     return {
       dateCompliteRequest: null,
-      result: null
+      result: null,
+      error: null
     };
   },
   methods: {
-    send_confirmation: function(result) {
+    send_confirmation: function(id) {
       if (this.dateCompliteRequest != null) {
-        this.result = !result;
-        console.log("выбрана дата", this.dateCompliteRequest);
+        console.log("выбрана дата", this.dateCompliteRequest, id);
+        axios({
+          method: "post",
+          url: "http://localhost:3000/request/request_update_date",
+          data: {
+            date: this.dateCompliteRequest,
+            id: id
+          },
+          mode: "no-cors"
+        })
+          .then(res => {
+            this.result = res.data;
+            if (this.result != null) {
+              setTimeout(() => {
+                (this.result = null),
+                  this.$router.push("/").catch(e => {
+                    this.error = e;
+                  });
+              }, 2000);
+              console.log(res.data);
+            }
+          })
+          .catch(e => {
+            this.error = e;
+          });
       }
     },
     close_message: function() {
@@ -45,9 +72,15 @@ export default {
     },
     Completion_date: function() {
       if (this.dateCompliteRequest != null) {
-        console.log("выбрана дата", this.dateCompliteRequest);
+        console.log("выбsрана дата", this.dateCompliteRequest);
       }
     }
+  },
+  components: {
+    errorMessage
+  },
+  props: {
+    id: String
   }
 };
 </script>

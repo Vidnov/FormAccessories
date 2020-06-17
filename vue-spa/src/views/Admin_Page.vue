@@ -24,7 +24,7 @@
           <div class="header">Точки</div>
           <div class="menu">
             <a class="item">Список точек</a>
-            <a class="item">Создать новую точку</a>
+            <a class="item"  @click="switchViews('createretail')">Создать точку</a> 
           </div>
         </div>
         <div class="item">
@@ -45,6 +45,7 @@
 import axios from "axios";
 import tablerequest from "../components/table_request";
 import createusers from "../components/create_user";
+import createretail from "../components/create_retail";
 import listusers from "../components/list_users";
 export default {
   name: "AdminPage",
@@ -62,7 +63,8 @@ export default {
   components: {
     tablerequest,
     createusers,
-    listusers
+    listusers,
+    createretail
   },
   props: ['post'],
 };

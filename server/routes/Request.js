@@ -1,9 +1,10 @@
 var express = require("express");
 var router = express.Router();
 const Users = require("../model/Users");
+const { request } = require("express");
 
 router.post("/get_user_request", (req, res) => {
- console.log(req.body)
+  console.log(req.body)
   Users.find({ Mail: req.body.user })
     .then((result) => {
       if (result == "") {
@@ -17,6 +18,34 @@ router.post("/get_user_request", (req, res) => {
       res.status(404).send("Ошибка! не смогли найти такого пользователя");
     });
 });
+
+router.post("/request_update_date", (req, res) => {
+
+  const { id, date } = req.body
+  Users.findOne({ "Request._id": id })
+    .then(
+      result => {
+        result.Request.forEach(element => {
+          if (element._id == id) {
+            element.Date_execution = date
+          }
+        });
+        result.save(function (err, doc) {
+          if (err) {
+            res.sendStatus(500).end("Внутрення ошибка сервера");
+            return console.error(err);
+          }
+          Users.findOne({ "Request._id": id }).then((r) => {
+            res.status(200).send('Запрос обработан успешно');
+          });
+        });
+      },
+    )
+    .catch(err => {
+      res.sendStatus(500).end("Внутрення ошибка сервера",err);
+    })
+
+})
 
 router.get("/allrequest", (req, res) => {
   Users.find()
