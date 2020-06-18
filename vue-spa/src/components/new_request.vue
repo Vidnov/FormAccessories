@@ -11,10 +11,13 @@
       <div class="content">
         Дорогой Друг
         <div class="sub header">На данный момент у вас нет заявок</div>
+        
       </div>
     </h2>
+    
 
     <table v-else class="ui violet table">
+      {{result.data}}
       <thead>
         <tr>
           <th>id</th>
@@ -48,14 +51,14 @@
         </tr>
       </tbody>
     </table>
-    <component v-bind:is="views"> </component>
+    <component v-bind:is="views"></component>
   </section>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  name: "Index",
+  name: "new request",
 
   computed: {
     result() {
@@ -71,11 +74,13 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("get_request_user", this.$store.getters.getMail);
+   // this.$store.dispatch("get_request_user", this.$store.getters.getMail);
+    this.$store.dispatch("get_request_user_new", this.$store.getters.getMail);
   },
   methods: {
     viewRequest: function(id) {
       this.url = "#/request/" + id;
+      this.$store.dispatch("update_seen_request_user",id)
     }
   }
 };

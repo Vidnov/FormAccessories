@@ -7,7 +7,7 @@ export default {
     Last_Name: localStorage.HelpDeskLastName,
     Middle_Name: localStorage.HelpDeskMiddleName,
     Result: null,
-    RequestZero: false,
+    // RequestZero: false,
     Err: null
   },
   getters: {
@@ -22,6 +22,7 @@ export default {
     }
   },
   actions: {
+
     exit({ commit }) {
       localStorage.clear();
       commit("set", { type: "Role", items: null });
@@ -69,6 +70,56 @@ export default {
           }
         })
         .catch(e => console.log(e));
+    },
+    update_seen_request_user({commit},id_request){ // Скорее всего  можно удалить
+      axios({
+        method: "post",
+        url: "http://localhost:3000/request/update_seen_request_user",
+        data: {
+          id_request: id_request
+        }
+      })
+        .then(res => {
+          
+          res.data.forEach(element => {
+            if (element.Request == "") {
+              commit("del", { type: "RequestZero", items: true });
+            } else {
+              commit("up", { type: "Result", items: element });
+
+            
+            }
+          });
+        })
+        .catch(e => {
+          this.err = e;
+          commit("err", { type: "Err", items: e });
+        });
+    },
+    get_request_user_new({ commit }, User) {
+      axios({
+        method: "post",
+        url: "http://localhost:3000/request/get_user_request_new",
+        data: {
+          user: User
+        }
+      })
+        .then(res => {
+          
+          res.data.forEach(element => {
+            if (element.Request == "") {
+              commit("del", { type: "RequestZero", items: true });
+            } else {
+              commit("up", { type: "Result", items: element });
+
+            
+            }
+          });
+        })
+        .catch(e => {
+          this.err = e;
+          commit("err", { type: "Err", items: e });
+        });
     },
     get_request_user({ commit }, User) {
       axios({
