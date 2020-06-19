@@ -6,9 +6,12 @@ export default {
     First_Name: localStorage.HelpDeskFirstName,
     Last_Name: localStorage.HelpDeskLastName,
     Middle_Name: localStorage.HelpDeskMiddleName,
-    Result: null,
-    // RequestZero: false,
-    Err: null
+    Result_New: null,
+    Result_Work:null,
+    Result_Date:null,
+    Err: null,
+    Message:null
+
   },
   getters: {
     getRole(state) {
@@ -17,8 +20,17 @@ export default {
     getMail(state) {
       return state.Mail;
     },
-    getResult(state) {
-      return state.Result;
+    getResultNew(state) {
+      return state.Result_New;
+    },
+    getResultWork(state) {
+      return state.Result_Work;
+    },
+    getResultDate(state) {
+      return state.Result_Date;
+    },
+    getMessage(state) {
+      return state.Message;
     }
   },
   actions: {
@@ -31,6 +43,7 @@ export default {
       commit("set", { type: "Last_Name", items: null });
       commit("set", { type: "Middle_Name", items: null });
       commit("set", { type: "Result", items: null });
+      commit("set", { type: "Result_Work", items: null });
     },
 
     login({ commit }, User) {
@@ -54,15 +67,23 @@ export default {
             commit("del", { type: "Mail", items: res.data.Mail });
             axios({
               method: "post",
-              url: "http://localhost:3000/request/get_user_request",
+              url: "http://localhost:3000/request/get_user_request_new",
               data: {
                 user: res.data.Mail
               }
             })
-              .then(r => {
-                r.data.forEach(element => {
-                  commit("set", { type: "Result", items: element });
+              .then(r => {  
+                if(r.data=="Новых заявок нет"){
+                  console.log(r.data )
+                  commit("del", { type: "Message", items: r.data });
+                }else{
+                  r.data.forEach(element => {
+                  
+                    commit("set", { type: "Result_New", items: element });
+                    commit("set", { type: "Message", items: null });
                 });
+                }
+               
               })
               .catch(e => {
                 console.log(e);
@@ -71,35 +92,61 @@ export default {
         })
         .catch(e => console.log(e));
     },
-    update_seen_request_user({commit},id_request){ // Скорее всего  можно удалить
+    update_seen_date_request_user({commit},dataRequest){  
       axios({
         method: "post",
-        url: "http://localhost:3000/request/update_seen_request_user",
+        url: "http://localhost:3000/request/request_update_date",
         data: {
-          id_request: id_request
+          date: dataRequest.dateCompliteRequest,
+          id: dataRequest.id
         }
       })
         .then(res => {
-          
-          res.data.forEach(element => {
-            if (element.Request == "") {
-              commit("del", { type: "RequestZero", items: true });
-            } else {
-              commit("up", { type: "Result", items: element });
-
-            
-            }
-          });
+          commit("up", { type: "Result_Date", items: res.data });
         })
         .catch(e => {
           this.err = e;
           commit("err", { type: "Err", items: e });
         });
     },
-    get_request_user_new({ commit }, User) {
+    get_request_user_new({ commit }, User) { //получение  новых заявок
+      commit("up",{type: "Result_Date", items: null })
       axios({
         method: "post",
         url: "http://localhost:3000/request/get_user_request_new",
+        data: {
+          user: User
+        }
+      })
+        .then(res => {         
+         console.log(typeof res.data)
+          if(typeof res.data!="object"){
+            commit("del", { type: "Message", items: res.data });
+          }
+          else{
+
+            res.data.forEach(element => {
+              if (element.Request == "") {
+               
+                commit("del", { type: "Result_New", items: element });
+              } else {
+                commit("del", { type: "Message", items: null });
+                console.log(element)
+                commit("up", { type: "Result_New", items: element });
+              }
+            });
+          }
+         
+        })
+        .catch(e => {
+          this.err = e;
+          commit("err", { type: "Err", items: e });
+        });
+    },
+    get_request_user_work({ commit }, User) {
+      axios({
+        method: "post",
+        url: "http://localhost:3000/request/get_request_user_work",
         data: {
           user: User
         }
@@ -110,7 +157,7 @@ export default {
             if (element.Request == "") {
               commit("del", { type: "RequestZero", items: true });
             } else {
-              commit("up", { type: "Result", items: element });
+              commit("up", { type: "Result_Work", items: element });
 
             
             }
@@ -134,7 +181,7 @@ export default {
             if (element.Request == "") {
               commit("del", { type: "RequestZero", items: true });
             } else {
-              commit("up", { type: "Result", items: element });
+              commit("up", { type: "Result_New", items: element });
 
             
             }

@@ -5,7 +5,7 @@
       <div class="header">Ошибка</div>
       <p>{{getErr}}</p>
     </div>-->
-    <h2 v-if="result.Request==''||result==''||result==undefined||result=={}||result==null" class="ui icon header">
+    <h2 v-if="result.Request==''" class="ui icon header">
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
@@ -13,11 +13,8 @@
         
       </div>
     </h2>
-    <h1 v-if="message">
-    {{message}}
-    </h1>
     <table v-else class="ui violet table">
-  
+      {{result.data}}
       <thead>
         <tr>
           <th>id</th>
@@ -51,20 +48,17 @@
         </tr>
       </tbody>
     </table>
+
   </section>
 </template>
-
 <script>
-import axios from "axios";
+import Axios from "axios";
 export default {
-  name: "newRequest",
+  name: "new request",
 
   computed: {
-    message(){
-      return this.$store.getters.getMessage;
-    },
     result() {
-      return this.$store.getters.getResultNew;
+      return this.$store.getters.getResultWork;
     },
     getErr() {
       return this.$store.getters.getErr;
@@ -76,15 +70,15 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("get_request_user_new", this.$store.getters.getMail);
+    this.$store.dispatch("get_request_user_work", this.$store.getters.getMail);
   },
   methods: {
     viewRequest: function(id) {
       this.url = "#/request/" + id;
-      this.$store.dispatch("update_seen_request_user",id)
     }
   }
 };
 </script>
-<style lang="scss">
+<style scoped>
+
 </style>

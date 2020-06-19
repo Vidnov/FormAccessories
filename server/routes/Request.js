@@ -3,73 +3,60 @@ var router = express.Router();
 const Users = require("../model/Users");
 const { request } = require("express");
 
-// router.post("/update_seen_request_user", (req, res) => {
-//   const {id_request}=req.body
-//   Users.findOne({ "Request._id": id_request})
-//     .then((result) => {
-//        result.Request.forEach(element=>{
-//          if(element._id==id_request){
-//            element.Seen=true
-//          }
-//        })
-//       result.save(function (err, doc) {
-//         if (err) {
-//           res.sendStatus(500).end("Внутрення ошибка сервера");
-//           return console.error(err);
-//         }
-//         Users.find({ $and: [{ Mail: result.Mail }, { Seen: false }] })
-//         .then((result) => {
-//           console.log(result)
-//           if (result == "") {
-//             console.log("я ничего не получил");
-//             res.status(404).send("Ошибка! не смогли найти такого пользователя");
-//           } else {
-//             res.status(200).send(result);
-//           }
-//         })
-//         .catch((e) => {
-//           console.error(e)
-//           res.status(404).send("Ошибка! не смогли найти такого пользователя");
-//         });
-//       });
-//     })
-//     .catch((e) => {
-//       console.error(e)
-//       res.status(404).send("Ошибка!");
-//     });
-// });
+router.post("/get_request_user_work", (req, res) => {
+  result_sort_request = [];
+  Users.find({ Mail: req.body.user, "Request.Seen": true })
+    .then((result) => {
+      result.forEach((element) => {
+        element.Request.forEach((request) => {
+          if (request.Seen == true) {
+            result_sort_request.push(request);
+          }
+        });
+        result.forEach((el) => {
+          el.Request = result_sort_request;
+        });
+        res.status(200).send(result);
+      });
+    })
+    .catch((e) => {
+      console.error(e);
+      res.status(200).send("Ошибка! не смогли найти такого пользователя");
+    });
+});
 
 router.post("/get_user_request_new", (req, res) => {
-  result_sort_request = []
+  result_sort_request = [];
   Users.find({ Mail: req.body.user, "Request.Seen": false })
     .then((result) => {
       if (result == "") {
-        console.log("я ничего не получил");
-        res.status(404).send("Ошибка! не смогли найти такого пользователя");
+        res.status(200).send("Новых заявок нет");
+        console.log('Извините новых заявок нет')
       } else {
-        result.forEach(element => {
-          element.Request.forEach(request => {
-           
+        result.forEach((element) => {
+
+          element.Request.forEach((request) => {
             if (request.Seen == false) {
-              result_sort_request.push(request)
+              result_sort_request.push(request);
             }
-          }
-          )
-        })
-        result.forEach(el=>{
-          el.Request=result_sort_request
-        })
-     
-        console.log(result)
+          });
+        });
+        result.forEach((el) => {
+          el.Request = result_sort_request;
+          console.log(result_sort_request)
+        });
+       
         res.status(200).send(result);
       }
     })
     .catch((e) => {
-      console.error(e)
+      console.error(e);
       res.status(404).send("Ошибка! не смогли найти такого пользователя");
     });
 });
+
 router.post("/get_user_request", (req, res) => {
+  // получить  все заявки
   Users.find({ Mail: req.body.user })
     .then((result) => {
       if (result == "") {
@@ -85,33 +72,29 @@ router.post("/get_user_request", (req, res) => {
 });
 
 router.post("/request_update_date", (req, res) => {
-
-  const { id, date } = req.body
+  const { id, date } = req.body;
   Users.findOne({ "Request._id": id })
-    .then(
-      result => {
-        result.Request.forEach(element => {
-          if (element._id == id) {
-            element.Date_execution = date
-            element.Seen = true
-          }
+    .then((result) => {
+      result.Request.forEach((element) => {
+        if (element._id == id) {
+          element.Date_execution = date;
+          element.Seen = true;
+        }
+      });
+      result.save(function (err, doc) {
+        if (err) {
+          res.sendStatus(500).end("Внутрення ошибка сервера");
+          return console.error(err);
+        }
+        Users.findOne({ "Request._id": id }).then((r) => {
+          res.status(200).send("Запрос обработан успешно");
         });
-        result.save(function (err, doc) {
-          if (err) {
-            res.sendStatus(500).end("Внутрення ошибка сервера");
-            return console.error(err);
-          }
-          Users.findOne({ "Request._id": id }).then((r) => {
-            res.status(200).send('Запрос обработан успешно');
-          });
-        });
-      },
-    )
-    .catch(err => {
-      res.sendStatus(500).end("Внутрення ошибка сервера", err);
+      });
     })
-
-})
+    .catch((err) => {
+      res.sendStatus(500).end("Внутрення ошибка сервера", err);
+    });
+});
 
 router.get("/allrequest", (req, res) => {
   Users.find()

@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div v-else-if="result!= null" class="ui success message message_block">
+    <div v-else-if="result!=null" class="ui success message message_block">
       <i class="close icon" v-on:click="close_message()"></i>
       <div class="header">{{result}}</div>
       <p>Вы можете изменить заявку обратившись к администратору сайта</p>
@@ -30,42 +30,32 @@ import axios from "axios";
 import errorMessage from "../components/error";
 export default {
   name: "calendar",
+    computed: {
+     result() {
+       return this.$store.getters.getResultDate;
+      }
+   },
+
   data() {
     return {
-      dateCompliteRequest: null,
-      result: null,
-      error: null
-    };
+      dateCompliteRequest: null
+    }
   },
   methods: {
     send_confirmation: function(id) {
-      if (this.dateCompliteRequest != null) {
-        console.log("выбрана дата", this.dateCompliteRequest, id);
-        axios({
-          method: "post",
-          url: "http://localhost:3000/request/request_update_date",
-          data: {
-            date: this.dateCompliteRequest,
-            id: id
-          },
-          mode: "no-cors"
-        })
-          .then(res => {
-            this.result = res.data;
-            if (this.result != null) {
-              setTimeout(() => {
-                (this.result = null),
-                  this.$router.push("/").catch(e => {
-                    this.error = e;
-                  });
-              }, 2000);
-              console.log(res.data);
-            }
-          })
-          .catch(e => {
-            this.error = e;
-          });
+
+      const dataRequest ={
+      id:id,
+      dateCompliteRequest:this.dateCompliteRequest,
+      user:this.$store.getters.getMail
       }
+      this.$store.dispatch('update_seen_date_request_user',dataRequest).then(res=>{
+        this.$store.dispatch('get_request_user_new',this.$store.getters.getMail).then(res=>{
+       
+        this.dateCompliteRequest=true
+        })
+
+      })
     },
     close_message: function() {
       this.$router.push("/").catch(err => console.err(err));

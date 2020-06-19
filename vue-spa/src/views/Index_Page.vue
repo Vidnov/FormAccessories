@@ -1,16 +1,16 @@
 <template>
   <div class="contant">
     <div class="ui massive vertical menu">
-      <a class="item">
+      <a class="item" @click="switchViews('newRequest')">
         <div class="ui small teal label">1</div>Новые заявки
       </a>
-      <a class="item">
+      <a class="item" @click="switchViews('workRequest')">
         <div class="ui small label">51</div>В работе
       </a>
-      <a class="item">
+      <a class="item" @click="switchViews()">
         <div class="ui small label">1</div>Завершенные
       </a>
-       <a class="item">
+       <a class="item" @click="switchViews()">
         <div class="ui small label">1</div>Отклоненные
       </a> 
       <div class="item">
@@ -26,6 +26,7 @@
 
 <script>
 import newRequest from "../components/new_request";
+import workRequest from "../components/work_request";
 import axios from "axios";
 export default {
   name: "Index",
@@ -34,9 +35,14 @@ export default {
       views: "newRequest"
     };
   },
-  methods: {},
+  methods: {
+     switchViews: function(views) {
+      this.views = views;
+    }
+  },
   components: {
-    newRequest
+    newRequest,
+    workRequest
   }
 };
 </script>

@@ -97,7 +97,5 @@ export default {
   display: grid;
   grid-template-columns: min-content auto;
 }
-.block_table_request{
 
-}
 </style>
