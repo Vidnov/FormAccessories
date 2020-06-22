@@ -1,22 +1,16 @@
 <template>
   <section>
-    <!-- <div v-if="getErr" class="ui negative message">
-      <i class="close icon"></i>
-      <div class="header">Ошибка</div>
-      <p>{{getErr}}</p>
-    </div>-->
-    <h2 v-if="result.Request==''||result==''||result==undefined||result=={}||result==null" class="ui icon header">
+    <h2  class="ui icon header" v-if="message">
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
-        <div class="sub header">На данный момент у вас нет заявок</div>
-        
+        <div class="sub header"><h2>{{message}}</h2></div>
       </div>
     </h2>
-    <h1 v-if="message">
-    {{message}}
-    </h1>
-    <table v-else class="ui violet table">
+    <br>
+    <br/>
+  
+    <table class="ui violet table" v-if="result">
   
       <thead>
         <tr>
@@ -72,10 +66,11 @@ export default {
   },
   data() {
     return {
-      url: ""
+      url: ''
     };
   },
   mounted() {
+    console.log(this.$store.getters.getMail)
     this.$store.dispatch("get_request_user_new", this.$store.getters.getMail);
   },
   methods: {

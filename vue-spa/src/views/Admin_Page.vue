@@ -65,8 +65,8 @@ export default {
     createusers,
     listusers,
     createretail
-  },
-  props: ['post'],
+  }
+  // props: ['post'],
 };
 </script>
 

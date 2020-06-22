@@ -67,7 +67,7 @@ router.post("/get_user_request", (req, res) => {
       }
     })
     .catch((e) => {
-      res.status(404).send("Ошибка! не смогли найти такого пользователя");
+      res.status(404).send("Ошибка!Не смогли найти такого пользователя");
     });
 });
 
@@ -92,7 +92,7 @@ router.post("/request_update_date", (req, res) => {
       });
     })
     .catch((err) => {
-      res.sendStatus(500).end("Внутрення ошибка сервера", err);
+      res.sendStatus(500).send("Внутрення ошибка сервера", err);
     });
 });
 
@@ -115,7 +115,7 @@ router.post("/delete/:_id", (req, res) => {
       });
       result.save(function (err, doc) {
         if (err) {
-          res.sendStatus(500).end("Внутрення ошибка сервера");
+          res.sendStatus(500).send("Внутрення ошибка сервера");
           return console.error(err);
         }
         Users.find().then((r) => {

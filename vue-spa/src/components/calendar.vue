@@ -21,7 +21,6 @@
       <div class="header">{{result}}</div>
       <p>Вы можете изменить заявку обратившись к администратору сайта</p>
     </div>
-    <errorMessage v-if="error" v-bind:error_message="error" />
   </section>
 </template>
 

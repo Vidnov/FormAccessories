@@ -6,12 +6,11 @@ export default {
     First_Name: localStorage.HelpDeskFirstName,
     Last_Name: localStorage.HelpDeskLastName,
     Middle_Name: localStorage.HelpDeskMiddleName,
-    Result_New: null,
-    Result_Work:null,
-    Result_Date:null,
-    Err: null,
-    Message:null
-
+    Result_New: '',
+    Result_Work: '',
+    Result_Date: '',
+    Err: '',
+    Message: ''
   },
   getters: {
     getRole(state) {
@@ -34,16 +33,16 @@ export default {
     }
   },
   actions: {
-
     exit({ commit }) {
       localStorage.clear();
-      commit("set", { type: "Role", items: null });
-      commit("set", { type: "Mail", items: null });
-      commit("set", { type: "First_Name", items: null });
-      commit("set", { type: "Last_Name", items: null });
-      commit("set", { type: "Middle_Name", items: null });
-      commit("set", { type: "Result", items: null });
-      commit("set", { type: "Result_Work", items: null });
+      commit("set", { type: "Role", items: undefined });
+      commit("set", { type: "Mail", items: '' });
+      commit("set", { type: "First_Name", items: '' });
+      commit("set", { type: "Last_Name", items: '' });
+      commit("set", { type: "Middle_Name", items: '' });
+      commit("set", { type: "Result", items: '' });
+      commit("set", { type: "Result_Work", items: '' });
+      commit("set", { type: "Result_New", items: '' });
     },
 
     login({ commit }, User) {
@@ -72,18 +71,17 @@ export default {
                 user: res.data.Mail
               }
             })
-              .then(r => {  
-                if(r.data=="Новых заявок нет"){
-                  console.log(r.data )
+              .then(r => {
+                if (r.data == "Новых заявок нет") {
+                  console.log(r.data);
                   commit("del", { type: "Message", items: r.data });
-                }else{
+                  commit("del", { type: "Result_New", items: '' })
+                } else {
                   r.data.forEach(element => {
-                  
                     commit("set", { type: "Result_New", items: element });
-                    commit("set", { type: "Message", items: null });
-                });
+                    commit("set", { type: "Message", items: '' });
+                  });
                 }
-               
               })
               .catch(e => {
                 console.log(e);
@@ -92,7 +90,7 @@ export default {
         })
         .catch(e => console.log(e));
     },
-    update_seen_date_request_user({commit},dataRequest){  
+    update_seen_date_request_user({ commit }, dataRequest) {
       axios({
         method: "post",
         url: "http://localhost:3000/request/request_update_date",
@@ -109,8 +107,9 @@ export default {
           commit("err", { type: "Err", items: e });
         });
     },
-    get_request_user_new({ commit }, User) { //получение  новых заявок
-      commit("up",{type: "Result_Date", items: null })
+    get_request_user_new({ commit }, User) {
+      //получение  новых заявок
+      commit("up", { type: "Result_Date", items: '' });
       axios({
         method: "post",
         url: "http://localhost:3000/request/get_user_request_new",
@@ -118,25 +117,23 @@ export default {
           user: User
         }
       })
-        .then(res => {         
-         console.log(typeof res.data)
-          if(typeof res.data!="object"){
+        .then(res => {
+          if (typeof res.data != "object") {
             commit("del", { type: "Message", items: res.data });
-          }
-          else{
-
+            commit("del", { type: "Result_New", items: '' });
+          } else {
             res.data.forEach(element => {
               if (element.Request == "") {
-               
-                commit("del", { type: "Result_New", items: element });
+                //commit("del", { type: "Result_New", items: element });
+                commit("del", { type: "Message", items: element });
+                commit("up", { type: "Result_New", items: '' });
               } else {
-                commit("del", { type: "Message", items: null });
-                console.log(element)
+                commit("del", { type: "Message", items: '' });
+                console.log('123',element);
                 commit("up", { type: "Result_New", items: element });
               }
             });
           }
-         
         })
         .catch(e => {
           this.err = e;
@@ -152,14 +149,11 @@ export default {
         }
       })
         .then(res => {
-          
           res.data.forEach(element => {
             if (element.Request == "") {
               commit("del", { type: "RequestZero", items: true });
             } else {
               commit("up", { type: "Result_Work", items: element });
-
-            
             }
           });
         })
@@ -182,8 +176,6 @@ export default {
               commit("del", { type: "RequestZero", items: true });
             } else {
               commit("up", { type: "Result_New", items: element });
-
-            
             }
           });
         })

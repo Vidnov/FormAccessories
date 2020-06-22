@@ -2,7 +2,7 @@ import axios from "axios";
 export default {
   state: {
     RequestZero: false,
-    Err: null,
+    Err: '',
     Mail: localStorage.HelpDeskMail,
     
   },
@@ -17,7 +17,7 @@ export default {
   actions: {
     exit({ commit }) {
       commit("del", { type: "RequestZero", items: true });
-      commit("del", { type: "Mail", items: null });
+      commit("del", { type: "Mail", items: '' });
     },
 
   

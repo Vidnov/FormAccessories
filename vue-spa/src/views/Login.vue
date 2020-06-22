@@ -36,7 +36,7 @@ export default {
       this.$store.dispatch("get_request_user",this.User);
       this.User.Login=null,
       this.User.Password=null
-      this.$router.push("/").catch(err => console.err(err));
+      this.$router.push("/send").catch(err => console.err(err));
      
     }
   }

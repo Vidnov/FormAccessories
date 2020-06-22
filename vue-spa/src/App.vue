@@ -3,7 +3,6 @@
    <navbarAdmin v-bind:roleAdmin="getRole" />
     <navbarUser v-bind:roleUser="getRole" />
     <navbar v-bind:role="getRole"/>
-  
     <router-view />
   </section>
 </template>

@@ -1,11 +1,6 @@
 <template>
   <section>
-    <!-- <div v-if="getErr" class="ui negative message">
-      <i class="close icon"></i>
-      <div class="header">Ошибка</div>
-      <p>{{getErr}}</p>
-    </div>-->
-    <h2 v-if="result.Request==''" class="ui icon header">
+    <h2 class="ui icon header">
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
@@ -13,7 +8,7 @@
         
       </div>
     </h2>
-    <table v-else class="ui violet table">
+    <table class="ui violet table">
       {{result.data}}
       <thead>
         <tr>
