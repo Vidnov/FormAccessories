@@ -61,13 +61,13 @@ router.post("/get_user_request", (req, res) => {
     .then((result) => {
       if (result == "") {
         console.log("я ничего не получил");
-        res.status(404).send("Ошибка! не смогли найти такого пользователя");
+        res.status(200).send("Список заявок пуст!");
       } else {
         res.status(200).send(result);
       }
     })
     .catch((e) => {
-      res.status(404).send("Ошибка!Не смогли найти такого пользователя");
+      res.status(200).send(e);
     });
 });
 

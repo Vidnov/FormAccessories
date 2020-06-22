@@ -1,5 +1,5 @@
 <template>
-  <div v-if="roleAdmin===true||roleAdmin==='true'" class="ui attached stackable menu">
+  <div v-if="roleAdmin===true" class="ui attached stackable menu">
     
     <div class="ui container">
       <a href="#/" class="item">
@@ -32,7 +32,7 @@ export default {
     }
   },
   props:{
-      roleAdmin:String
+      roleAdmin:Boolean
   }
 };
 </script>

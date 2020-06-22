@@ -1,5 +1,5 @@
 <template>
-      <div  v-if="role===null||role===undefined||role===string" class="ui attached stackable menu">
+      <div  v-if="role===null||role===undefined" class="ui attached stackable menu">
       <div class="ui container">
         <a href="#/send/" class="item">
           <i class="mail icon"></i> Заявка

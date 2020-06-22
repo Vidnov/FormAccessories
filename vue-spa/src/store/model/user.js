@@ -2,7 +2,7 @@ import axios from "axios";
 export default {
   state: {
     Mail: localStorage.HelpDeskMail,
-    Role: localStorage.HelpDeskRole,
+    Role: undefined,
     First_Name: localStorage.HelpDeskFirstName,
     Last_Name: localStorage.HelpDeskLastName,
     Middle_Name: localStorage.HelpDeskMiddleName,
@@ -33,6 +33,18 @@ export default {
     }
   },
   actions: {
+    getrole({commit},Mail){
+ 
+      if(Mail===undefined){
+        console.log('Пользователь не найден')
+        commit("set", { type: "Role", items: undefined });
+      }else{
+        console.log('Почта авторизированого пользователя',Mail)
+    
+
+      }
+    }, 
+
     exit({ commit }) {
       localStorage.clear();
       commit("set", { type: "Role", items: undefined });

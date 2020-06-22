@@ -49,7 +49,7 @@
 <script>
 import Axios from "axios";
 export default {
-  name: "new request",
+  name: "workRequest",
 
   computed: {
     result() {

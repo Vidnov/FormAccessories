@@ -1,5 +1,5 @@
 <template>
-  <div v-if="roleUser==='false'||roleUser===false" class="ui attached stackable menu">
+  <div v-if="roleUser===false" class="ui attached stackable menu">
     <div class="ui container">
       <a href="#/" class="item">
         <i class="home icon"></i> Главная
@@ -27,7 +27,7 @@ export default {
     }
   },
   props:{
-      roleUser:String
+      roleUser:Boolean
   }
 };
 </script>
