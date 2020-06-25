@@ -2,11 +2,11 @@
   <div v-if="roleAdmin===true" class="ui attached stackable menu">
     
     <div class="ui container">
-      <a href="#/" class="item">
+      <a href="#/main" class="item">
         <i class="home icon"></i> Главная
       </a>
 
-      <a href="#/send/" class="item">
+      <a href="#/" class="item">
         <i class="mail icon"></i> Заявка
       </a>
       <div class="right item">

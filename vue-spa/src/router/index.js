@@ -12,13 +12,14 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Index",
-    component: indexPage
-  },
-  {
-    path: "/send",
+    
     name: "Request form",
     component: Request_form
+  },
+  {
+    path: "/main",
+    name: "Index",
+    component: indexPage
   },
   {
     path: "/login",
