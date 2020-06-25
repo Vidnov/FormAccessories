@@ -6,10 +6,7 @@
         Дорогой Друг
         <div class="sub header"><h2>{{message}}</h2></div>
       </div>
-    </h2>
-    <br>
-    <br/>
-  
+    </h2>  
     <table class="ui violet table" v-if="result">
   
       <thead>

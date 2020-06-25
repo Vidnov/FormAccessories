@@ -10,7 +10,8 @@ export default {
     Result_Work: '',
     Result_Date: '',
     Err: '',
-    Message: ''
+    Message: '',
+    MessageWork:''
   },
   getters: {
     getRole(state) {
@@ -30,6 +31,9 @@ export default {
     },
     getMessage(state) {
       return state.Message;
+    },
+    getMessageWork(state) {
+      return state.MessageWork;
     }
   },
   actions: {
@@ -40,8 +44,7 @@ export default {
         commit("set", { type: "Role", items: undefined });
       }else{
         console.log('Почта авторизированого пользователя',Mail)
-    
-
+        commit("set", { type: "Role", items: Boolean(localStorage.HelpDeskRole) });
       }
     }, 
 
@@ -153,6 +156,7 @@ export default {
         });
     },
     get_request_user_work({ commit }, User) {
+      
       axios({
         method: "post",
         url: "http://localhost:3000/request/get_request_user_work",
@@ -161,15 +165,19 @@ export default {
         }
       })
         .then(res => {
+          console.log(123) 
           res.data.forEach(element => {
+           
             if (element.Request == "") {
-              commit("del", { type: "RequestZero", items: true });
+            
+              commit("del", { type: "MessageWork", items: '' });
             } else {
               commit("up", { type: "Result_Work", items: element });
             }
           });
         })
         .catch(e => {
+          console.log(123) 
           this.err = e;
           commit("err", { type: "Err", items: e });
         });

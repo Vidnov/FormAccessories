@@ -1,5 +1,6 @@
 <template>
   <div v-if="roleUser===false" class="ui attached stackable menu">
+    
     <div class="ui container">
       <a href="#/main" class="item">
         <i class="home icon"></i> Главная

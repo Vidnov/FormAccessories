@@ -1,15 +1,14 @@
 <template>
   <section>
-    <h2 class="ui icon header">
+    <h2 class="ui icon header" v-if="message" >
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
-        <div class="sub header">На данный момент у вас нет заявок</div>
+        <div class="sub header"><h2>{{message}}</h2></div>
         
       </div>
     </h2>
-    <table class="ui violet table">
-      {{result.data}}
+    <table class="ui violet table" v-if="result">
       <thead>
         <tr>
           <th>id</th>
@@ -52,6 +51,9 @@ export default {
   name: "workRequest",
 
   computed: {
+     message(){
+      return this.$store.getters.getMessageWork;
+    },
     result() {
       return this.$store.getters.getResultWork;
     },
