@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2 class="ui icon header" v-if="message" >
+    <h2 class="ui icon header message" v-if="message" >
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
@@ -13,11 +13,9 @@
         <tr>
           <th>id</th>
           <th>Приоритет</th>
-          <th>Статус</th>
           <th>Тема</th>
           <th>ID TeamWeaver</th>
           <th>Отправитель</th>
-          <th>Получатель</th>
           <th>Дата создания</th>
           <th></th>
         </tr>
@@ -27,22 +25,22 @@
           <td>{{request._id}}</td>
           <td v-if="request.Priority_Request">Срочно</td>
           <td v-else>Обычный</td>
-          <td>{{request.Status}}</td>
           <td>{{request.Theme_Request}}</td>
 
           <td>{{request.Id_TeamWeaver}}</td>
-          <td>{{request.Sender}}</td>
-          <td>{{request.Recipient}}</td>
+          <td>{{request.Sender}}</td> 
           <td>{{request.Date_Request}}</td>
           <td>
             <a v-bind:href="url">
               <button @click="viewRequest(request._id)" class="ui blue button">Просмотреть заявку</button>
             </a>
+             <a v-bind:href="url">
+              <button @click="viewRequest(request._id)" class="ui green button">Закрыть заявку</button>
+            </a>
           </td>
         </tr>
       </tbody>
     </table>
-
   </section>
 </template>
 <script>

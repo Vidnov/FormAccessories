@@ -156,7 +156,7 @@ export default {
         });
     },
     get_request_user_work({ commit }, User) {
-      
+     
       axios({
         method: "post",
         url: "http://localhost:3000/request/get_request_user_work",
@@ -165,16 +165,24 @@ export default {
         }
       })
         .then(res => {
-          console.log(123) 
-          res.data.forEach(element => {
+          console.log('1232222',  res.data)
+          console.log('1232222', typeof res.data)
+          if(typeof res.data == "string"){
+            commit("del", { type: "MessageWork", items: res.data });
            
-            if (element.Request == "") {
-            
-              commit("del", { type: "MessageWork", items: '' });
-            } else {
-              commit("up", { type: "Result_Work", items: element });
-            }
-          });
+          }else{
+            res.data.forEach(element => {
+        
+              if (element.Request == "") {
+              
+                commit("del", { type: "MessageWork", items: 'Заявок не найдено возможно неполадки с сервером' });
+              } else {
+                commit("up", { type: "Result_Work", items: element });
+                commit("del", { type: "MessageWork", items: '' });
+              }
+            });
+          }
+          
         })
         .catch(e => {
           console.log(123) 

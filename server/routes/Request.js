@@ -5,19 +5,28 @@ const { request } = require("express");
 
 router.post("/get_request_user_work", (req, res) => {
   result_sort_request = [];
+
   Users.find({ Mail: req.body.user, "Request.Seen": true })
     .then((result) => {
-      result.forEach((element) => {
-        element.Request.forEach((request) => {
-          if (request.Seen == true) {
-            result_sort_request.push(request);
-          }
+      if (result == '') {
+        res.status(200).send("Заявок в работе нет");
+        console.log('Заявок в работе нет')
+      } else {
+        result.forEach((element) => {
+          element.Request.forEach((request) => {
+
+            if (request.Seen == true) {
+              result_sort_request.push(request);
+            }
+          });
+          result.forEach((el) => {
+            el.Request = result_sort_request;
+          });
+          res.status(200).send(result);
         });
-        result.forEach((el) => {
-          el.Request = result_sort_request;
-        });
-        res.status(200).send(result);
-      });
+
+      }
+
     })
     .catch((e) => {
       console.error(e);
@@ -45,7 +54,7 @@ router.post("/get_user_request_new", (req, res) => {
           el.Request = result_sort_request;
           console.log(result_sort_request)
         });
-       
+
         res.status(200).send(result);
       }
     })
