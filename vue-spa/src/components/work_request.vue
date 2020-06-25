@@ -34,9 +34,8 @@
             <a v-bind:href="url">
               <button @click="viewRequest(request._id)" class="ui blue button">Просмотреть заявку</button>
             </a>
-             <a v-bind:href="url">
-              <button @click="viewRequest(request._id)" class="ui green button">Закрыть заявку</button>
-            </a>
+             
+              <button @click="closeRequest(request._id)" class="ui green button">Закрыть заявку</button>
           </td>
         </tr>
       </tbody>
@@ -57,6 +56,9 @@ export default {
     },
     getErr() {
       return this.$store.getters.getErr;
+    },
+    Mail(){
+      return this.$store.getters.getMail;
     }
   },
   data() {
@@ -70,6 +72,13 @@ export default {
   methods: {
     viewRequest: function(id) {
       this.url = "#/request/" + id;
+    },
+    closeRequest:function(id){
+      const data ={
+        id:id,
+        mail: this.$store.getters.getMail 
+      }
+      this.$store.dispatch("close_request",data)
     }
   }
 };

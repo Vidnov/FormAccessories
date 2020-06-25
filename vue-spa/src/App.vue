@@ -4,8 +4,8 @@
     <navbarUser v-bind:roleUser="getRole" />
     <navbar v-bind:role="getRole"/>
     <router-view />
-    <!-- {{getRole}}
-    {{typeof getRole}} -->
+    {{getRole}}
+    {{typeof getRole}}
   </section>
 </template>
 

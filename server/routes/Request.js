@@ -3,6 +3,32 @@ var router = express.Router();
 const Users = require("../model/Users");
 const { request } = require("express");
 
+router.post("/close_request", (req, res) => {
+  const {Mail,id} = req.body
+  console.log(Mail)
+  Users.findOne({ "Request._id": id })
+    .then(result => {
+      result.Request.forEach(request => {
+        if (request._id == id) {
+          request.Status = 'Закрыта'
+        } else {
+          console.err('Такой заявки на закрытие не найдено')
+        }
+      })
+      result.save(function (err, doc) {
+        if (err) {
+          res.sendStatus(500).end("Внутрення ошибка сервера");
+          return console.error(err);
+        }
+        Users.find({Mail:Mail}).then((r) => {
+          console.log(r)
+          res.status(200).send(r);
+        });
+      });
+    })
+    .catch(err => { console.error(err) })
+})
+
 router.post("/get_request_user_work", (req, res) => {
   result_sort_request = [];
 

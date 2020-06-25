@@ -11,7 +11,7 @@ export default {
     Result_Date: '',
     Err: '',
     Message: '',
-    MessageWork:''
+    MessageWork: ''
   },
   getters: {
     getRole(state) {
@@ -37,16 +37,16 @@ export default {
     }
   },
   actions: {
-    getrole({commit},Mail){
- 
-      if(Mail===undefined){
+    getrole({ commit }, Mail) {
+
+      if (Mail === undefined) {
         console.log('Пользователь не найден')
         commit("set", { type: "Role", items: undefined });
-      }else{
-        console.log('Почта авторизированого пользователя',Mail)
+      } else {
+        console.log('Почта авторизированого пользователя', Mail)
         commit("set", { type: "Role", items: Boolean(localStorage.HelpDeskRole) });
       }
-    }, 
+    },
 
     exit({ commit }) {
       localStorage.clear();
@@ -144,7 +144,7 @@ export default {
                 commit("up", { type: "Result_New", items: '' });
               } else {
                 commit("del", { type: "Message", items: '' });
-                console.log('123',element);
+                console.log('123', element);
                 commit("up", { type: "Result_New", items: element });
               }
             });
@@ -156,7 +156,7 @@ export default {
         });
     },
     get_request_user_work({ commit }, User) {
-     
+
       axios({
         method: "post",
         url: "http://localhost:3000/request/get_request_user_work",
@@ -165,16 +165,16 @@ export default {
         }
       })
         .then(res => {
-          console.log('1232222',  res.data)
+          console.log('1232222', res.data)
           console.log('1232222', typeof res.data)
-          if(typeof res.data == "string"){
+          if (typeof res.data == "string") {
             commit("del", { type: "MessageWork", items: res.data });
-           
-          }else{
+
+          } else {
             res.data.forEach(element => {
-        
+
               if (element.Request == "") {
-              
+
                 commit("del", { type: "MessageWork", items: 'Заявок не найдено возможно неполадки с сервером' });
               } else {
                 commit("up", { type: "Result_Work", items: element });
@@ -182,10 +182,10 @@ export default {
               }
             });
           }
-          
+
         })
         .catch(e => {
-          console.log(123) 
+          console.log(123)
           this.err = e;
           commit("err", { type: "Err", items: e });
         });
@@ -211,6 +211,24 @@ export default {
           this.err = e;
           commit("err", { type: "Err", items: e });
         });
+    },
+    close_request({ commit }, data) {
+      axios({
+        method: "post",
+        url: "http://localhost:3000/request/close_request",
+        data: {
+          id: data.id,
+          Mail:data.mail
+        }
+      })
+      .then(
+        res=>{
+          console.log(res)
+        }
+      )
+      .catch(e=>{
+        console.error(e)
+      })
     }
   },
   mutations: {
