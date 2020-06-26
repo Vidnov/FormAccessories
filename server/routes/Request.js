@@ -3,56 +3,72 @@ var router = express.Router();
 const Users = require("../model/Users");
 const { request } = require("express");
 
+router.get("/get_request_user_close", (req, res) => {
+  result_sort_request = [];
+
+  Users.find({ "Request.Seen": true ,"Request.Status": "Закрыта"})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((e) => {
+      console.error(e);
+      res.status(404).send("Ошибка! не смогли найти такого пользователя");
+    });
+});
+
 router.post("/close_request", (req, res) => {
-  const {Mail,id} = req.body
-  console.log(Mail)
+  const { Mail, id } = req.body;
   Users.findOne({ "Request._id": id })
-    .then(result => {
-      result.Request.forEach(request => {
+    .then((result) => {
+      result.Request.forEach((request) => {
         if (request._id == id) {
-          request.Status = 'Закрыта'
-        } else {
-          console.err('Такой заявки на закрытие не найдено')
+          request.Status = "Закрыта";
         }
-      })
+      });
       result.save(function (err, doc) {
         if (err) {
           res.sendStatus(500).end("Внутрення ошибка сервера");
-          return console.error(err);
+          console.log(err);
         }
-        Users.find({Mail:Mail}).then((r) => {
-          console.log(r)
+        Users.find({ Mail: Mail }).then((r) => {
+          console.log(r);
           res.status(200).send(r);
         });
       });
     })
-    .catch(err => { console.error(err) })
-})
+    .catch((err) => {
+      console.error(err);
+    });
+});
 
 router.post("/get_request_user_work", (req, res) => {
   result_sort_request = [];
 
-  Users.find({ Mail: req.body.user, "Request.Seen": true })
+  Users.find({
+    Mail: req.body.user,
+    "Request.Seen": true,
+    "Request.Status": "В работе",
+  })
     .then((result) => {
-      if (result == '') {
+      console.log(result)
+      if (result == "") {
         res.status(200).send("Заявок в работе нет");
-        console.log('Заявок в работе нет')
+        console.log("Заявок в работе нет");
       } else {
         result.forEach((element) => {
           element.Request.forEach((request) => {
-
-            if (request.Seen == true) {
+            if ((request.Seen == true) & (request.Status == "В работе")) {
               result_sort_request.push(request);
             }
           });
           result.forEach((el) => {
+
+            console.log('Заявки в  работе которые отправляются клиенту',result_sort_request)
             el.Request = result_sort_request;
           });
           res.status(200).send(result);
         });
-
       }
-
     })
     .catch((e) => {
       console.error(e);
@@ -62,14 +78,13 @@ router.post("/get_request_user_work", (req, res) => {
 
 router.post("/get_user_request_new", (req, res) => {
   result_sort_request = [];
-  Users.find({ Mail: req.body.user, "Request.Seen": false })
+  Users.find({ Mail: req.body.user, "Request.Seen": false ,"Request.Status": "В работе",})
     .then((result) => {
       if (result == "") {
         res.status(200).send("Новых заявок нет");
-        console.log('Извините новых заявок нет')
+        console.log("Извините новых заявок нет");
       } else {
         result.forEach((element) => {
-
           element.Request.forEach((request) => {
             if (request.Seen == false) {
               result_sort_request.push(request);
@@ -78,7 +93,7 @@ router.post("/get_user_request_new", (req, res) => {
         });
         result.forEach((el) => {
           el.Request = result_sort_request;
-          console.log(result_sort_request)
+          console.log(result_sort_request);
         });
 
         res.status(200).send(result);
