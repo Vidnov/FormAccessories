@@ -8,10 +8,12 @@ export default {
     Middle_Name: localStorage.HelpDeskMiddleName,
     Result_New: '',
     Result_Work: '',
+    Result_Close: '',
     Result_Date: '',
     Err: '',
     Message: '',
-    MessageWork: ''
+    MessageWork: '',
+    MessageClose: ''
   },
   getters: {
     getRole(state) {
@@ -29,14 +31,43 @@ export default {
     getResultDate(state) {
       return state.Result_Date;
     },
+    getResultClose(state) {
+      return state.Result_Close;
+    },
     getMessage(state) {
       return state.Message;
     },
     getMessageWork(state) {
       return state.MessageWork;
+    },
+    getMessageClose(state) {
+      return state.MessageClose;
     }
   },
   actions: {
+    get_request_user_close({ commit }, Mail) {
+
+      axios({
+        method: "post",
+        url: "http://localhost:3000/request/get_request_user_close",
+        data: {
+          Mail: Mail
+        }
+      })
+        .then(res => {
+          console.log('Сервер на  запрос о закрытых  заявка отправил', res.data)
+          console.log('Typeof',typeof res.data)
+          if (typeof res.data != "object") {
+            commit("set", { type: "Result_Close", items: '' });
+            commit("set", { type: "MessageClose", items: res.data });
+          } else {
+            res.data.forEach(element => {
+              commit("set", { type: "Result_Close", items: element });
+            });
+
+          }
+        })
+    },
     getrole({ commit }, Mail) {
 
       if (Mail === undefined) {
@@ -218,17 +249,27 @@ export default {
         url: "http://localhost:3000/request/close_request",
         data: {
           id: data.id,
-          Mail:data.mail
+          Mail: data.mail
         }
       })
-      .then(
-        res=>{
-          console.log(res)
-        }
-      )
-      .catch(e=>{
-        console.error(e)
-      })
+        .then(
+          res => {
+            console.log("запрос на закрытие заявки",res)
+            if (typeof res.data != "object") {
+              commit("set", { type: "Result_Work", items: '' });
+              commit("set", { type: "MessageWork", items: res.data });
+            } else {
+              res.data.forEach(element => {
+                commit("set", { type: "Result_Work", items: element });
+              });
+  
+            }
+
+          }
+        )
+        .catch(e => {
+          console.error(e)
+        })
     }
   },
   mutations: {

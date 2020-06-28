@@ -1,6 +1,5 @@
 <template>
   <section>
-    
     <h2 class="ui icon header message" v-if="message" >
       <i class="settings icon"></i>
       <div class="content">
@@ -18,7 +17,7 @@
           <th>ID TeamWeaver</th>
           <th>Отправитель</th>
           <th>Дата создания</th>
-          <th></th>
+          <th>Cтатус</th>
         </tr>
       </thead>
       <tbody>
@@ -31,12 +30,11 @@
           <td>{{request.Id_TeamWeaver}}</td>
           <td>{{request.Sender}}</td> 
           <td>{{request.Date_Request}}</td>
+           <td>{{request.Status}}</td>
           <td>
             <a v-bind:href="url">
               <button @click="viewRequest(request._id)" class="ui blue button">Просмотреть заявку</button>
             </a>
-             
-              <button @click="closeRequest(request._id)" class="ui green button">Закрыть заявку</button>
           </td>
         </tr>
       </tbody>
@@ -46,14 +44,14 @@
 <script>
 import Axios from "axios";
 export default {
-  name: "workRequest",
+  name: "closeRequest",
 
   computed: {
      message(){
-      return this.$store.getters.getMessageWork;
+      return this.$store.getters.getMessageClose;
     },
     result() {
-      return this.$store.getters.getResultWork;
+      return this.$store.getters.getResultClose;
     },
     getErr() {
       return this.$store.getters.getErr;
@@ -68,18 +66,11 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("get_request_user_work", this.$store.getters.getMail);
+    this.$store.dispatch("get_request_user_close", this.$store.getters.getMail);
   },
   methods: {
     viewRequest: function(id) {
       this.url = "#/request/" + id;
-    },
-    closeRequest:function(id){
-      const data ={
-        id:id,
-        mail: this.$store.getters.getMail 
-      }
-      this.$store.dispatch("close_request",data)
     }
   }
 };

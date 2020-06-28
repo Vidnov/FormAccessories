@@ -7,7 +7,7 @@
       <a class="item" @click="switchViews('workRequest')">
         <div class="ui small label">51</div>В работе
       </a>
-      <a class="item" @click="switchViews()">
+      <a class="item" @click="switchViews('closeRequest')">
         <div class="ui small label">1</div>Завершенные
       </a>
        <a class="item" @click="switchViews()">
@@ -27,6 +27,7 @@
 <script>
 import newRequest from "../components/new_request";
 import workRequest from "../components/work_request";
+import closeRequest from "../components/close_request";
 import axios from "axios";
 export default {
   name: "Index",
@@ -42,7 +43,8 @@ export default {
   },
   components: {
     newRequest,
-    workRequest
+    workRequest,
+    closeRequest
   }
 };
 </script>

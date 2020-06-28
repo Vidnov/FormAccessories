@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2  class="ui icon header" v-if="message">
+    <h2  class="ui icon header message" v-if="message">
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
@@ -67,7 +67,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$store.getters.getMail)
     this.$store.dispatch("get_request_user_new", this.$store.getters.getMail);
   },
   methods: {
