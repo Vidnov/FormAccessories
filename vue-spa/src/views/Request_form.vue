@@ -27,6 +27,10 @@
               name="first-name"
               placeholder="ID teamweaver"
             />
+            <h4>Прикрепить изображение</h4>
+            <div class="input">
+              <input id="file" ref="file" type="file" />
+            </div>
           </div>
           <h4>Выберите получателя</h4>
           <div class="select">
@@ -47,7 +51,7 @@
                   placeholder="ID teamweaver"
                 />
               </div>
-             
+
               <h4>Суть проблемы</h4>
               <div class="field">
                 <label>Text</label>
@@ -55,17 +59,15 @@
               </div>
             </div>
           </div>
-          
         </div>
-        
+
         <br />
         <button v-on:click="send" class="positive ui button">Отправить запрос</button>
       </div>
-      
+
       <h1 v-if="Result_Request">{{Result_Request}}</h1>
       <h1 class="error" v-if="Error_Request">{{Error_Request}}</h1>
     </div>
-    
   </section>
 </template>
 
