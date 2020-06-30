@@ -11,8 +11,9 @@ router.post("/", async (req, res) => {
       Mail,
       Theme_Request,
       Text_Request,
+      Image
     } = req.body;
-  
+    console.log('123',req.body)
     Users.findOne({ Mail: Mail })
       .then((result) => {
         result.Request.push({

@@ -29,7 +29,7 @@ const schema = new Schema({
     },
     Request:[
         {
-            Priority_Request:{
+            Priority_Request:{  //Необходимо  изменить  на  тип String 
                 type:Boolean,
                 required:true,
                 default:false
@@ -74,7 +74,12 @@ const schema = new Schema({
                 type:Boolean,
                 default:false
             },
-            
+            Image:{
+                type:String
+            },
+            Comments:{
+                type:String
+            }
         }
     ]
 

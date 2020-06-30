@@ -1,6 +1,8 @@
 <template>
   <section>
-    <div class="container">
+    {{Image}}
+      <errorMessage v-bind:error_message="Error_Message"  v-if="Error_Message"/>
+      <div class="container"  v-else >
       <h1 class="ui dividing header">Создать заявку</h1>
       <div class="ui placeholder segment">
         <div class="ui form">
@@ -29,8 +31,9 @@
             />
             <h4>Прикрепить изображение</h4>
             <div class="input">
-              <input id="file" ref="file" type="file" />
+              <input id="file"  @change="sync" type="file" />
             </div>
+            <img :src="Image" >
           </div>
           <h4>Выберите получателя</h4>
           <div class="select">
@@ -72,11 +75,14 @@
 </template>
 
 <script>
+import errorMessage from '../components/error'
 import axios from "axios";
 export default {
   name: "Sending_form",
   data() {
     return {
+      Error_Message:null,
+      Image:null,
       Priority_Request: false,
       Sender: null,
       Id_TeamWeaver: null,
@@ -88,13 +94,20 @@ export default {
       Error_Request: ""
     };
   },
+  components:{
+    errorMessage
+  },
   mounted() {
     axios.get("http://localhost:3000/users/getlistusers", {}).then(res_user => {
-      console.log(res_user.data);
       this.Recipients = res_user.data;
     });
   },
   methods: {
+    sync:function(e){
+    
+        e.preventDefault();
+        this.Image = e.target.files[0];
+    },
     send: function() {
       if (
         this.Priority_Request == null ||
@@ -109,10 +122,15 @@ export default {
           this.Error_Request = "";
         }, 2000);
       } else {
+      const ImageDate = new FormData();
+        ImageDate.append('image', this.Image)
+        console.log(ImageData)
+        this.Image=ImageData
         axios({
           method: "post",
           url: "http://localhost:3000/mail",
           data: {
+            Image:this.Image,
             Priority_Request: this.Priority_Request,
             Sender: this.Sender,
             Id_TeamWeaver: this.Id_TeamWeaver,
@@ -122,7 +140,6 @@ export default {
           }
         })
           .then(response => {
-            console.log(response.data);
             this.Result_Request = response.data;
             this.Priority_Request = null;
             this.Sender = null;
@@ -135,7 +152,8 @@ export default {
             }, 2000);
           })
           .catch(e => {
-            console.log(e);
+            console.log(e)
+           Error_Message=e
           });
       }
     }
