@@ -1,7 +1,6 @@
 <template>
   <section>
-    
-    <h2 class="ui icon header message" v-if="message" >
+    <h2 class="ui icon header message" v-if="result.Request==''||message" >
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
@@ -9,7 +8,7 @@
         
       </div>
     </h2>
-    <table class="ui violet table" v-if="result">
+    <table class="ui violet table" v-else-if="result">
       <thead>
         <tr>
           <th>id</th>

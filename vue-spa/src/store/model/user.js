@@ -196,8 +196,6 @@ export default {
         }
       })
         .then(res => {
-          console.log('1232222', res.data)
-          console.log('1232222', typeof res.data)
           if (typeof res.data == "string") {
             commit("del", { type: "MessageWork", items: res.data });
 
@@ -206,7 +204,7 @@ export default {
 
               if (element.Request == "") {
 
-                commit("del", { type: "MessageWork", items: 'Заявок не найдено возможно неполадки с сервером' });
+                commit("del", { type: "MessageWork", items: 'Заявок в работе нет ' });
               } else {
                 commit("up", { type: "Result_Work", items: element });
                 commit("del", { type: "MessageWork", items: '' });
