@@ -35,6 +35,7 @@ router.post("/get_request_user_close", (req, res) => {
 
 router.post("/close_request", (req, res) => {
   const { Mail, id } = req.body;
+  const result_sort_request =[]
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((request) => {
@@ -63,7 +64,7 @@ router.post("/close_request", (req, res) => {
                 }
               });
               result.forEach((el) => {
-    
+
                 console.log('Заявки в  работе которые отправляются клиенту', result_sort_request)
                 el.Request = result_sort_request;
               });
