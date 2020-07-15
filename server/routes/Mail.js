@@ -1,6 +1,35 @@
 var express = require('express');
 var router = express.Router();  
+const multer  = require("multer");  
 const Users = require("../model/Users");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    console.log('!!!', file);
+    const ext = file.originalname.split('.').reverse()[0];
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.' + ext);
+  }
+})
+
+const upload = multer({ storage: storage })
+
+router.post("/upload", upload.single("file"), function (req, res, next) {
+    
+     console.log('!!!', req.file);
+     
+      
+      let filedata = req.file;
+   
+      if(!filedata)
+          res.send("Ошибка при загрузке файла");
+      else
+          res.send("Файл загружен");
+  });
+  
 
 router.post("/", async (req, res) => {
     // let testEmailAccount = await nodemailer.createTransport();

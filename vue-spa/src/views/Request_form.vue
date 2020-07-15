@@ -109,28 +109,33 @@ export default {
         this.Image = e.target.files[0];
     },
     send: function() {
-      if (
-        this.Priority_Request == null ||
-        this.Sender == null ||
-        this.Id_TeamWeaver == null ||
-        this.Recipient == null ||
-        this.Theme_Request == null ||
-        this.Text_Request == null
-      ) {
-        this.Error_Request = "Не все поля заполнены!";
-        setTimeout(() => {
-          this.Error_Request = "";
-        }, 2000);
-      } else {
-      const ImageDate = new FormData();
-        ImageDate.append('image', this.Image)
-        console.log(ImageData)
-        this.Image=ImageData
+      // if (
+      //   this.Priority_Request == null ||
+      //   this.Sender == null ||
+      //   this.Id_TeamWeaver == null ||
+      //   this.Recipient == null ||
+      //   this.Theme_Request == null ||
+      //   this.Text_Request == null
+      // ) {
+      //   this.Error_Request = "Не все поля заполнены!";
+      //   setTimeout(() => {
+      //     this.Error_Request = "";
+      //   }, 2000);
+      // } else {
+       console.log('!!!', this.Image);
+       
+        let formData = new FormData();
+        formData.append('file', this.Image);
+         axios.post('http://localhost:3000/mail/upload', formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        } 
+        })
         axios({
           method: "post",
           url: "http://localhost:3000/mail",
           data: {
-            Image:this.Image,
+           // Image:this.Image,
             Priority_Request: this.Priority_Request,
             Sender: this.Sender,
             Id_TeamWeaver: this.Id_TeamWeaver,
@@ -155,7 +160,7 @@ export default {
             console.log(e)
            Error_Message=e
           });
-      }
+      //}
     }
   }
 };

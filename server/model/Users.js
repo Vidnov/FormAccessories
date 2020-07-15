@@ -4,56 +4,56 @@ const Schema = Mongoose.Schema;
 const schema = new Schema({
     First_Name:{
         type:String,
-        required: true,
+        required: false,
     },
     Last_Name:{
         type:String,
-        required: true,
+        required: false,
     },
     Middle_Name:{
         type:String,
-        required: true,
+        required: false
     },
     Mail:{
         type:String,
-        required: true,
+        required: false
     },
     Password:{
         type:String,
-        required: true,
+        required: false,
     },
     Role:{
         type:Boolean,
-        required:true,
+        required:false,
         default:false,
     },
     Request:[
         {
             Priority_Request:{  //Необходимо  изменить  на  тип String 
                 type:Boolean,
-                required:true,
+                required:false,
                 default:false
             },
             Id_TeamWeaver:{
                 type:Number,
-                required:true
+                required:false
             },
             Sender:{
                 type:String,
-                required:true,
+                required:false,
             },
 
             Recipient:{
                 type:String,
-                required:true
+                required:false
             },
             Theme_Request:{
                 type:String,
-                required:true
+                required:false
             },
             Text_Request:{
                 type:String,
-                required:true
+                required:false
             },
             Date_Request:{
                 type:Date,
