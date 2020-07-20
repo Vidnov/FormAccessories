@@ -193,7 +193,7 @@ router.get("/allrequest", (req, res) => {
 });
 router.post("/delete/:_id", (req, res) => {
   const id = req.body.body;
-
+  console.log(id)
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((el, index) => {
