@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2 class="ui icon header message" v-if="message" >
+    <h2 class="ui icon header message"  v-if="result.Request==''||message" >
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
