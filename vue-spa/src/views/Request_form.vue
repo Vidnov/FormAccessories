@@ -1,8 +1,8 @@
 <template>
   <section>
-    {{Image}}
-      <errorMessage v-bind:error_message="Error_Message"  v-if="Error_Message"/>
-      <div class="container"  v-else >
+    {{Name}}
+    <errorMessage v-bind:error_message="Error_Message" v-if="Error_Message" />
+    <div class="container" v-else>
       <h1 class="ui dividing header">Создать заявку</h1>
       <div class="ui placeholder segment">
         <div class="ui form">
@@ -31,9 +31,9 @@
             />
             <h4>Прикрепить изображение</h4>
             <div class="input">
-              <input id="file"  @change="sync" type="file" />
+              <input id="file" @change="sync" type="file" />
             </div>
-            <img :src="Image" >
+            <img :src="Image" />
           </div>
           <h4>Выберите получателя</h4>
           <div class="select">
@@ -66,6 +66,7 @@
 
         <br />
         <button v-on:click="send" class="positive ui button">Отправить запрос</button>
+
       </div>
 
       <h1 v-if="Result_Request">{{Result_Request}}</h1>
@@ -75,14 +76,14 @@
 </template>
 
 <script>
-import errorMessage from '../components/error'
+import errorMessage from "../components/error";
 import axios from "axios";
 export default {
   name: "Sending_form",
   data() {
     return {
-      Error_Message:null,
-      Image:null,
+      Error_Message: null,
+      Image: null,
       Priority_Request: false,
       Sender: null,
       Id_TeamWeaver: null,
@@ -94,7 +95,7 @@ export default {
       Error_Request: ""
     };
   },
-  components:{
+  components: {
     errorMessage
   },
   mounted() {
@@ -103,10 +104,11 @@ export default {
     });
   },
   methods: {
-    sync:function(e){
-    
-        e.preventDefault();
-        this.Image = e.target.files[0];
+   
+    sync: function(e) {
+      e.preventDefault();
+      this.Image = e.target.files[0];
+      console.log(this.Image);
     },
     send: function() {
       if (
@@ -122,15 +124,16 @@ export default {
           this.Error_Request = "";
         }, 2000);
       } else {
-       console.log('!!!', this.Image);
-       
         let formData = new FormData();
-        formData.append('file', this.Image);
-         axios.post('http://localhost:3000/mail/upload', formData,{
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        } 
-        })
+        formData.append("file", this.Image);
+        axios.post("http://localhost:3000/mail/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+          // data: {
+          //   Image:new Date().toLocaleString().replace(/[\s.,%,:,;]/g, '') //replace удаляет все точки запятые %,:,;
+          // }
+        });
         axios({
           method: "post",
           url: "http://localhost:3000/mail",
@@ -144,20 +147,19 @@ export default {
           }
         })
           .then(response => {
-            this.Result_Request = response.data;
-            this.Priority_Request = null;
-            this.Sender = null;
-            this.Id_TeamWeaver = null;
-            this.Recipient = null;
-            this.Theme_Request = null;
-            this.Text_Request = null;
+            // this.Result_Request = response.data;
+            // this.Priority_Request = null;
+            // this.Sender = null;
+            // this.Id_TeamWeaver = null;
+            // this.Recipient = null;
+            // this.Theme_Request = null;
+            // this.Text_Request = null;
             setTimeout(() => {
               this.Result_Request = "";
             }, 2000);
           })
           .catch(e => {
-            console.log(e)
-           Error_Message=e
+            Error_Message = e;
           });
       }
     }

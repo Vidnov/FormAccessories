@@ -2,16 +2,18 @@ var express = require("express");
 var router = express.Router();
 const multer = require("multer");
 const Users = require("../model/Users");
+const CreateMail = require ('../model/CreateMail')
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    // console.log('!!!', file);
-    const ext = file.originalname.split(".").reverse()[0];
+    
+    const ext = file.originalname.split(".").reverse()[0]; //формат
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, file.fieldname + "-" + uniqueSuffix + "." + ext);
+    return uniqueSuffix
   },
 });
 
@@ -20,6 +22,7 @@ const upload = multer({ storage: storage });
 router.post("/upload", upload.single("file"), function (req, res, next) {
 
   let filedata = req.file;
+
   if (!filedata) {
     next();
     console.log("Ошибка при загрузке файла");
@@ -30,7 +33,7 @@ router.post("/upload", upload.single("file"), function (req, res, next) {
 });
 
 router.post("/", async (req, res) => {
-  // let testEmailAccount = await nodemailer.createTransport();
+
   const {
     Priority_Request,
     Sender,
@@ -40,7 +43,6 @@ router.post("/", async (req, res) => {
     Text_Request,
     Image,
   } = req.body;
-  console.log(req.body);
   Users.findOne({ Mail: Mail })
     .then((result) => {
       result.Request.push({
@@ -63,32 +65,6 @@ router.post("/", async (req, res) => {
       res.status(400).end("Произошла ошибка!");
       console.error(err);
     });
-
-  // let transporter = nodemailer.createTransport({
-  //   service: "gmail",
-  //   auth: {
-  //     user: "nvidnov",
-  //     pass: "UFhybr419153!@",
-  //   },
-  // });
-
-  // let result = await transporter.sendMail({
-  //   from: '"Node js" nodejs@example.com',
-  //   to: req.body.recipient,
-  //   subject:
-  //     "Новая заявка! " + req.body.subject + " Приоритет:" + req.body.priority,
-  //   text:
-  //     "К вам поступило  новое обращение! \n" +
-  //     "Заявитель:" +
-  //     req.body.tt +
-  //     "\n" +
-  //     "Текст Обращения: " +
-  //     req.body.text,
-  // });
-
-  // console.log(result);
-  // res.setHeader("access-control-allow-origin", `http://localhost:8080`);
-  // res.status(200).send("сообщение отправлено");
 });
 
 module.exports = router;

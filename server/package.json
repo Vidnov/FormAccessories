@@ -16,7 +16,7 @@
     "mongoose": "^5.9.16",
     "mongose": "0.0.2-security",
     "multer": "^1.4.2",
-    "nodemailer": "^6.4.6",
+    "nodemailer": "^6.4.10",
     "nodemon": "^2.0.3",
     "path": "^0.12.7",
     "validator": "^13.0.0"
