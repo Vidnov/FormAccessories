@@ -6,9 +6,9 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const config = require("./config");
 const Users = require("./model/Users");
-
+const path =require('path')
 //require Routes
-
+const requestImage =require('./routes/Image')
 const indexRouter= require('./routes/Index')
 const sendRouter= require('./routes/Send')
 const markRouter= require('./routes/Mark')
@@ -19,7 +19,7 @@ const requestRouter= require('./routes/Request')
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(express.static(path.join(__dirname, 'uploads')))
 // parse application/json
 app.use(bodyParser.json());
 app.use(cors());
@@ -30,6 +30,7 @@ app.use('/getmark',markRouter)
 app.use('/mail',mailRouter)
 app.use('/users/',usersRouter)
 app.use('/request/',requestRouter)
+app.use('/image/',requestImage)
 
 app.use(multer({dest:"uploads"}).single("filedata"));
 

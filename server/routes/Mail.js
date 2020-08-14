@@ -2,30 +2,28 @@ var express = require("express");
 var router = express.Router();
 const multer = require("multer");
 const Users = require("../model/Users");
-const CreateMail = require ('../model/CreateMail')
+const CreateMail = require("../model/CreateMail");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    
-    const ext = file.originalname.split(".").reverse()[0]; //формат
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + "." + ext);
-    return uniqueSuffix
+    cb(null, file.originalname);
+    console.log(file.originalname )
+    return file.originalname;
   },
 });
 
 const upload = multer({ storage: storage });
 
 router.post("/upload", upload.single("file"), function (req, res, next) {
-
   let filedata = req.file;
 
   if (!filedata) {
     next();
     console.log("Ошибка при загрузке файла");
+    res.send('Ошибка загрузки файла!')
   } else {
     next();
     console.log("Файл загружен");
@@ -33,19 +31,20 @@ router.post("/upload", upload.single("file"), function (req, res, next) {
 });
 
 router.post("/", async (req, res) => {
-
   const {
+    Image_Name,
     Priority_Request,
     Sender,
     Id_TeamWeaver,
     Mail,
     Theme_Request,
     Text_Request,
-    Image,
   } = req.body;
+
   Users.findOne({ Mail: Mail })
     .then((result) => {
       result.Request.push({
+        Image_Name:Image_Name,
         Priority_Request: Priority_Request,
         Id_TeamWeaver: Id_TeamWeaver,
         Sender: Sender,

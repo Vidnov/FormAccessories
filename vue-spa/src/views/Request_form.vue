@@ -1,6 +1,5 @@
 <template>
   <section>
-    {{Name}}
     <errorMessage v-bind:error_message="Error_Message" v-if="Error_Message" />
     <div class="container" v-else>
       <h1 class="ui dividing header">Создать заявку</h1>
@@ -84,6 +83,7 @@ export default {
     return {
       Error_Message: null,
       Image: null,
+      ImageName: null,
       Priority_Request: false,
       Sender: null,
       Id_TeamWeaver: null,
@@ -108,9 +108,12 @@ export default {
     sync: function(e) {
       e.preventDefault();
       this.Image = e.target.files[0];
-      console.log(this.Image);
+     
     },
     send: function() {
+      const  uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      const ext = this.Image.name.split(".").reverse()[0];
+      this.ImageName=uniqueSuffix+'.'+ext
       if (
         this.Priority_Request == null ||
         this.Sender == null ||
@@ -119,25 +122,27 @@ export default {
         this.Theme_Request == null ||
         this.Text_Request == null
       ) {
+       ///Ошибка не вылезает поправить 
         this.Error_Request = "Не все поля заполнены!";
         setTimeout(() => {
           this.Error_Request = "";
         }, 2000);
       } else {
         let formData = new FormData();
-        formData.append("file", this.Image);
+        formData.append("file", this.Image,this.ImageName);
+        console.log(uniqueSuffix+ext)
         axios.post("http://localhost:3000/mail/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
-          // data: {
-          //   Image:new Date().toLocaleString().replace(/[\s.,%,:,;]/g, '') //replace удаляет все точки запятые %,:,;
-          // }
-        });
+        }).then(res=>{
+            this.Result_Request = res.data;
+        })
         axios({
           method: "post",
           url: "http://localhost:3000/mail",
           data: {
+            Image_Name: this.ImageName,
             Priority_Request: this.Priority_Request,
             Sender: this.Sender,
             Id_TeamWeaver: this.Id_TeamWeaver,
@@ -147,13 +152,13 @@ export default {
           }
         })
           .then(response => {
-            // this.Result_Request = response.data;
-            // this.Priority_Request = null;
-            // this.Sender = null;
-            // this.Id_TeamWeaver = null;
-            // this.Recipient = null;
-            // this.Theme_Request = null;
-            // this.Text_Request = null;
+            this.Result_Request = response.data;
+            this.Priority_Request = null;
+            this.Sender = null;
+            this.Id_TeamWeaver = null;
+            this.Recipient = null;
+            this.Theme_Request = null;
+            this.Text_Request = null;
             setTimeout(() => {
               this.Result_Request = "";
             }, 2000);
