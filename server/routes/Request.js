@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Users = require("../model/Users");
 const { request } = require("express");
+const e = require("express");
 
 
 router.post("/get_request_user_close", (req, res) => {
@@ -221,6 +222,7 @@ router.get("/:_id", (req, res) => {
       return result.forEach((element) => {
         return element.Request.forEach((elementRequest) => {
           if (elementRequest._id == id) {
+            console.log(elementRequest)
             res.status(200).send(elementRequest);
           }
         });

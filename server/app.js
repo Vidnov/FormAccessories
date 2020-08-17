@@ -19,7 +19,7 @@ const requestRouter= require('./routes/Request')
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'uploads')))
+app.use(express.static('uploads'));
 // parse application/json
 app.use(bodyParser.json());
 app.use(cors());

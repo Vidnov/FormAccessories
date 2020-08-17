@@ -26,6 +26,9 @@
         <b>TeamWeaver:</b>
         {{ Request.ID_TeamWeaver }}
       </p>
+      <p>
+          <a target="_blank" :href="Img_Path"><img :src="Img_Path"/></a>
+      </p>
       <br />
       <div class="ui buttons">
         <button class="ui positive button" v-on:click="accept(Request.Complite)">Принять</button>
@@ -49,9 +52,11 @@ export default {
   name: "RequestPage",
   data() {
     return {
+      Img_Path:"http://localhost:3000/1597421929548-249208008.png",
       Message: null,
       ViewRequest: true,
       Request: {
+        Image_Name:null,
         Date_Request: null,
         ID_TeamWeaver: null,
         Priority_Request: false,
@@ -89,6 +94,8 @@ export default {
           this.Request.Sender = res.data.Sender;
           this.Request.Text_Request = res.data.Text_Request;
           this.Request.Theme_Request = res.data.Theme_Request;
+          this.Request.Image_Name = res.data.Image_Name;
+          this.Img_Path='http://localhost:3000/'+this.Request.Image_Name
         } else {
           this.ViewRequest = false;
           this.Message = res.data;
@@ -103,4 +110,8 @@ export default {
 };
 </script>
 <style  scoped>
+
+img{
+  width: 200px;
+}
 </style>
