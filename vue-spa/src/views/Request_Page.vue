@@ -1,5 +1,6 @@
 <template>
   <section>
+    {{Request.Image_Name}}
     <div
       v-if="ViewRequest&Request.Complite===false"
       class="ui raised very padded text container segment"
@@ -26,7 +27,7 @@
         <b>TeamWeaver:</b>
         {{ Request.ID_TeamWeaver }}
       </p>
-      <p>
+      <p v-if="Request.Image_Name">
           <a target="_blank" :href="Img_Path"><img :src="Img_Path"/></a>
       </p>
       <br />

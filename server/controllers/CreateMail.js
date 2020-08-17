@@ -3,6 +3,10 @@ const nodemailer = require("nodemailer");
 
 async function CreateMail(service,user,password,recipient,sender,priority,text){
 //let testEmailAccount = await nodemailer.createTransport();
+if(priority=='true')
+priority="Срочно!"
+else
+priority=""
 let transporter = nodemailer.createTransport({
     service: service,
     auth: {
@@ -12,17 +16,15 @@ let transporter = nodemailer.createTransport({
   });
 
   let result = await transporter.sendMail({
-    from: '"Node js" nodejs@example.com',
+    from: '"HelpDesk" nodejs@example.com',
     to: recipient,
     subject:
-      "Новая заявка! " + req.body.subject + " Приоритет:" + priority,
+      "Новая заявка! "+priority,
     text:
       "К вам поступило  новое обращение! \n" +
-      "Заявитель:" +
-      sender +
+      "Заявитель:" +sender+
       "\n" +
-      "Текст Обращения: " +
-      text,
+      "Текст Обращения: "+text,
   });
 
   console.log(result);

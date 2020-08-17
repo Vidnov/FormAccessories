@@ -32,7 +32,6 @@
             <div class="input">
               <input id="file" @change="sync" type="file" />
             </div>
-            <img :src="Image" />
           </div>
           <h4>Выберите получателя</h4>
           <div class="select">
@@ -65,7 +64,6 @@
 
         <br />
         <button v-on:click="send" class="positive ui button">Отправить запрос</button>
-
       </div>
 
       <h1 v-if="Result_Request">{{Result_Request}}</h1>
@@ -82,7 +80,7 @@ export default {
   data() {
     return {
       Error_Message: null,
-      Image: null,
+      Image: "",
       ImageName: null,
       Priority_Request: false,
       Sender: null,
@@ -92,28 +90,38 @@ export default {
       Theme_Request: null,
       Text_Request: null,
       Result_Request: "",
-      Error_Request: ""
+      Error_Request: "",
     };
   },
   components: {
-    errorMessage
+    errorMessage,
   },
   mounted() {
-    axios.get("http://localhost:3000/users/getlistusers", {}).then(res_user => {
-      this.Recipients = res_user.data;
-    });
+    axios
+      .get("http://localhost:3000/users/getlistusers", {})
+      .then((res_user) => {
+        this.Recipients = res_user.data;
+      });
   },
   methods: {
-   
-    sync: function(e) {
+    sync: function (e) {
       e.preventDefault();
       this.Image = e.target.files[0];
-     
     },
-    send: function() {
-      const  uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      const ext = this.Image.name.split(".").reverse()[0];
-      this.ImageName=uniqueSuffix+'.'+ext
+    send: function () {
+
+        let image_obj =(image)=>{
+         if (image != "") {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        const ext = image.name.split(".").reverse()[0];
+        this.ImageName = uniqueSuffix + "." + ext;
+        let formData = new FormData();
+        formData.append("file", image, this.ImageName);
+         return formData
+        }
+     
+      }
+       console.log(image_obj(this.Image))
       if (
         this.Priority_Request == null ||
         this.Sender == null ||
@@ -122,22 +130,21 @@ export default {
         this.Theme_Request == null ||
         this.Text_Request == null
       ) {
-       ///Ошибка не вылезает поправить 
+        ///Ошибка не вылезает поправить
         this.Error_Request = "Не все поля заполнены!";
         setTimeout(() => {
           this.Error_Request = "";
         }, 2000);
       } else {
-        let formData = new FormData();
-        formData.append("file", this.Image,this.ImageName);
-        console.log(uniqueSuffix+ext)
-        axios.post("http://localhost:3000/mail/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }).then(res=>{
+        axios
+          .post("http://localhost:3000/mail/upload", image_obj(this.Image), {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
             this.Result_Request = res.data;
-        })
+          });
         axios({
           method: "post",
           url: "http://localhost:3000/mail",
@@ -148,10 +155,10 @@ export default {
             Id_TeamWeaver: this.Id_TeamWeaver,
             Mail: this.Recipient,
             Theme_Request: this.Theme_Request,
-            Text_Request: this.Text_Request
-          }
+            Text_Request: this.Text_Request,
+          },
         })
-          .then(response => {
+          .then((response) => {
             this.Result_Request = response.data;
             this.Priority_Request = null;
             this.Sender = null;
@@ -163,12 +170,12 @@ export default {
               this.Result_Request = "";
             }, 2000);
           })
-          .catch(e => {
+          .catch((e) => {
             Error_Message = e;
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

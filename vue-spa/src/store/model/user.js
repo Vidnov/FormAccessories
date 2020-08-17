@@ -170,7 +170,6 @@ export default {
           } else {
             res.data.forEach(element => {
               if (element.Request == "") {
-                //commit("del", { type: "Result_New", items: element });
                 commit("del", { type: "Message", items: element });
                 commit("up", { type: "Result_New", items: '' });
               } else {
@@ -252,7 +251,6 @@ export default {
       })
         .then(
           res => {
-            console.log("запрос на закрытие заявки",res)
             if (typeof res.data != "object") {
               commit("set", { type: "Result_Work", items: '' });
               commit("set", { type: "MessageWork", items: res.data });

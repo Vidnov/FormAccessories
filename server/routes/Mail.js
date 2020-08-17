@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const multer = require("multer");
 const Users = require("../model/Users");
-const CreateMail = require("../model/CreateMail");
+const CreateMail = require("../controllers/CreateMail");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -57,6 +57,7 @@ router.post("/", async (req, res) => {
           res.sendStatus(500).end("Внутрення ошибка сервера");
           return console.error(err);
         }
+        CreateMail('gmail','nvidnov@gmail.com','UFhybr419153!@',Mail,Sender,Priority_Request,Text_Request)
         res.status(201).end("Ваша заявка успешно создана!");
       });
     })
