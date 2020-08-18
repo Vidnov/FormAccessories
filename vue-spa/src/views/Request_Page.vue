@@ -31,7 +31,7 @@
           <a target="_blank" :href="Img_Path"><img :src="Img_Path"/></a>
       </p>
       <br />
-      <div class="ui buttons">
+      <div v-if="Request" class="ui buttons">
         <button class="ui positive button" v-on:click="accept(Request.Complite)">Принять</button>
         <div class="or"></div>
         <button class="ui button">Отказаться</button>
@@ -53,10 +53,10 @@ export default {
   name: "RequestPage",
   data() {
     return {
-      Img_Path:"http://localhost:3000/1597421929548-249208008.png",
       Message: null,
       ViewRequest: true,
       Request: {
+        Status:null,
         Image_Name:null,
         Date_Request: null,
         ID_TeamWeaver: null,
@@ -93,6 +93,7 @@ export default {
           this.Request.Priority_Request = res.data.Priority_Request;
           this.Request.Recipiend = res.data.Recipient;
           this.Request.Sender = res.data.Sender;
+          this.Request.Status = res.data.Status;
           this.Request.Text_Request = res.data.Text_Request;
           this.Request.Theme_Request = res.data.Theme_Request;
           this.Request.Image_Name = res.data.Image_Name;

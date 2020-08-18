@@ -117,7 +117,7 @@ router.post("/get_request_user_work", (req, res) => {
 
 router.post("/get_user_request_new", (req, res) => {
   result_sort_request = [];
-  Users.find({ Mail: req.body.user, "Request.Seen": false, "Request.Status": "В работе", })
+  Users.find({ Mail: req.body.user, "Request.Seen": false, "Request.Status": "На Рассмотрении", })
     .then((result) => {
       if (result == "") {
         res.status(200).send("Новых заявок нет");
@@ -168,6 +168,7 @@ router.post("/request_update_date", (req, res) => {
         if (element._id == id) {
           element.Date_execution = date;
           element.Seen = true;
+          element.Status='В работе'
         }
       });
       result.save(function (err, doc) {

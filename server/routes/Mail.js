@@ -10,7 +10,7 @@ var storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
-    console.log(file.originalname )
+    console.log(file.originalname);
     return file.originalname;
   },
 });
@@ -23,7 +23,7 @@ router.post("/upload", upload.single("file"), function (req, res, next) {
   if (!filedata) {
     next();
     console.log("Ошибка при загрузке файла");
-    res.send('Ошибка загрузки файла!')
+    res.send("Ошибка загрузки файла!");
   } else {
     next();
     console.log("Файл загружен");
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
   Users.findOne({ Mail: Mail })
     .then((result) => {
       result.Request.push({
-        Image_Name:Image_Name,
+        Image_Name: Image_Name,
         Priority_Request: Priority_Request,
         Id_TeamWeaver: Id_TeamWeaver,
         Sender: Sender,
@@ -57,7 +57,15 @@ router.post("/", async (req, res) => {
           res.sendStatus(500).end("Внутрення ошибка сервера");
           return console.error(err);
         }
-        CreateMail('gmail','nvidnov@gmail.com','UFhybr419153!@',Mail,Sender,Priority_Request,Text_Request)
+        CreateMail(
+          "gmail",
+          "nvidnov@gmail.com",
+          "UFhybr419153!@",
+          Mail,
+          Sender,
+          Priority_Request,
+          Text_Request
+        );
         res.status(201).end("Ваша заявка успешно создана!");
       });
     })

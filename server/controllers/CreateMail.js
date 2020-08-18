@@ -16,7 +16,7 @@ let transporter = nodemailer.createTransport({
   });
 
   let result = await transporter.sendMail({
-    from: '"HelpDesk" nodejs@example.com',
+    from: '"HelpDesk" support@sotiks.net',
     to: recipient,
     subject:
       "Новая заявка! "+priority,

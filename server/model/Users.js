@@ -70,7 +70,7 @@ const schema = new Schema({
       },
       Status: {
         type: String,
-        default: "В работе",
+        default: "На Рассмотрении",
       },
       Completion_date: {
         // Дата планируемого выполнения
