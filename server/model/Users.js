@@ -29,9 +29,9 @@ const schema = new Schema({
   },
   Request: [
     {
-        Image_Name: {
+      Image_Name: {
         type: String,
-        default: ''
+        default: "",
       },
       Priority_Request: {
         //Необходимо  изменить  на  тип String
@@ -85,6 +85,11 @@ const schema = new Schema({
         type: String,
       },
       Comments: {
+        // Комментарий при закрытии заявки
+        type: String,
+      },
+      Image_Name_Comments: {
+        // Прикрепляем скрин к закрытию заявки
         type: String,
       },
     },

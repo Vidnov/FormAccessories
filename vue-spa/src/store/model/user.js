@@ -13,7 +13,8 @@ export default {
     Err: '',
     Message: '',
     MessageWork: '',
-    MessageClose: ''
+    MessageClose: '',
+    Info:''
   },
   getters: {
     getRole(state) {
@@ -42,6 +43,9 @@ export default {
     },
     getMessageClose(state) {
       return state.MessageClose;
+    },
+    getInfo(state) {
+      return state.Info;
     }
   },
   actions: {
@@ -203,7 +207,7 @@ export default {
 
               if (element.Request == "") {
 
-                commit("del", { type: "MessageWork", items: 'Заявок в работе нет ' });
+                commit("del", { type: "MessageWork", items: 'Заявок в работе нет' });
               } else {
                 commit("up", { type: "Result_Work", items: element });
                 commit("del", { type: "MessageWork", items: '' });
@@ -251,12 +255,22 @@ export default {
       })
         .then(
           res => {
+            
             if (typeof res.data != "object") {
               commit("set", { type: "Result_Work", items: '' });
               commit("set", { type: "MessageWork", items: res.data });
+              commit("set", { type: "Info", items: 'Заявка закрыта' });
+                setTimeout(()=>{
+                  commit("set", { type: "Info", items: '' });
+                },2000)
             } else {
               res.data.forEach(element => {
+               
                 commit("set", { type: "Result_Work", items: element });
+                commit("del", { type: "Info", items: 'Заявка закрыта' });
+                setTimeout(()=>{
+                  commit("set", { type: "Info", items: '' });
+                },2000)
               });
   
             }

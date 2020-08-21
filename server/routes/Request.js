@@ -4,28 +4,29 @@ const Users = require("../model/Users");
 const { request } = require("express");
 const e = require("express");
 
-
 router.post("/get_request_user_close", (req, res) => {
   result_sort_request = [];
-  const Mail = req.body.Mail
+  const Mail = req.body.Mail;
   Users.find({ "Request.Seen": true, "Request.Status": "Закрыта", Mail: Mail })
     .then((result) => {
       if (result == "") {
         res.status(200).send("Завершенных заявок нет");
         console.log("Завершенных заявок нет");
       } else {
-        result.forEach(res => {
-          res.Request.forEach(request => {
-            if (request.Seen === true & request.Status == "Закрыта") {
-              result_sort_request.push(request)
+        result.forEach((res) => {
+          res.Request.forEach((request) => {
+            if ((request.Seen === true) & (request.Status == "Закрыта")) {
+              result_sort_request.push(request);
             }
-          })
-        })
+          });
+        });
         result.forEach((el) => {
-
-          console.log('Закрытые заявки которые отправляются клиенту', result_sort_request)
+          console.log(
+            "Закрытые заявки которые отправляются клиенту",
+            result_sort_request
+          );
           el.Request = result_sort_request;
-        })
+        });
         res.send(result);
       }
     })
@@ -35,9 +36,40 @@ router.post("/get_request_user_close", (req, res) => {
     });
 });
 
+router.post("/comments", (req, res) => {
+  const { Id, Comments, ImageName } = req.body;
+  const result = "";
+  const err = "";
+  console.log(Comments);
+  Users.findOne({ "Request._id": Id })
+    .then((result) => {
+      result.Request.forEach((request) => {
+        if (request._id == Id) {
+          request.Comments = Comments;
+          request.Image_Name_Comments = ImageName;
+        }
+      });
+      result.save((e, doc) => {
+        if (e) {
+          const err = e;
+        }
+        result = doc;
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  if (result) {
+    res.sendStatus(200).send(result);
+  } else if (err) {
+    res.sendStatus(500).send(e);
+  } else {
+    res.send("Not Found Response");
+  }
+});
 router.post("/close_request", (req, res) => {
   const { Mail, id } = req.body;
-  const result_sort_request =[]
+  const result_sort_request = [];
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((request) => {
@@ -51,14 +83,14 @@ router.post("/close_request", (req, res) => {
           console.log(err);
         }
         Users.find({
-          Mail: Mail, "Request.Seen": true,
+          Mail: Mail,
+          "Request.Seen": true,
           "Request.Status": "В работе",
         }).then((result) => {
-          if(result==''){
-            console.log('Заявок в работе нет')
-            res.status(200).send("Заявок в работе нет")
-          }else
-          {
+          if (result == "") {
+            console.log("Заявок в работе нет");
+            res.status(200).send("Заявок в работе нет");
+          } else {
             result.forEach((element) => {
               element.Request.forEach((request) => {
                 if ((request.Seen == true) & (request.Status == "В работе")) {
@@ -66,8 +98,10 @@ router.post("/close_request", (req, res) => {
                 }
               });
               result.forEach((el) => {
-
-                console.log('Заявки в  работе которые отправляются клиенту', result_sort_request)
+                console.log(
+                  "Заявки в  работе которые отправляются клиенту",
+                  result_sort_request
+                );
                 el.Request = result_sort_request;
               });
               res.status(200).send(result);
@@ -101,8 +135,10 @@ router.post("/get_request_user_work", (req, res) => {
             }
           });
           result.forEach((el) => {
-
-            console.log('Заявки в  работе которые отправляются клиенту', result_sort_request)
+            console.log(
+              "Заявки в  работе которые отправляются клиенту",
+              result_sort_request
+            );
             el.Request = result_sort_request;
           });
           res.status(200).send(result);
@@ -117,7 +153,11 @@ router.post("/get_request_user_work", (req, res) => {
 
 router.post("/get_user_request_new", (req, res) => {
   result_sort_request = [];
-  Users.find({ Mail: req.body.user, "Request.Seen": false, "Request.Status": "На Рассмотрении", })
+  Users.find({
+    Mail: req.body.user,
+    "Request.Seen": false,
+    "Request.Status": "На Рассмотрении",
+  })
     .then((result) => {
       if (result == "") {
         res.status(200).send("Новых заявок нет");
@@ -132,7 +172,6 @@ router.post("/get_user_request_new", (req, res) => {
         });
         result.forEach((el) => {
           el.Request = result_sort_request;
-        
         });
 
         res.status(200).send(result);
@@ -168,7 +207,7 @@ router.post("/request_update_date", (req, res) => {
         if (element._id == id) {
           element.Date_execution = date;
           element.Seen = true;
-          element.Status='В работе'
+          element.Status = "В работе";
         }
       });
       result.save(function (err, doc) {
@@ -195,7 +234,7 @@ router.get("/allrequest", (req, res) => {
 });
 router.post("/delete/:_id", (req, res) => {
   const id = req.body.body;
-  console.log(id)
+  console.log(id);
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((el, index) => {
@@ -223,7 +262,7 @@ router.get("/:_id", (req, res) => {
       return result.forEach((element) => {
         return element.Request.forEach((elementRequest) => {
           if (elementRequest._id == id) {
-            console.log(elementRequest)
+            console.log(elementRequest);
             res.status(200).send(elementRequest);
           }
         });

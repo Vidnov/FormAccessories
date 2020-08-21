@@ -30,6 +30,19 @@ router.post("/upload", upload.single("file"), function (req, res, next) {
   }
 });
 
+router.post("/upload_comments", upload.single("file"), function (req, res, next) {
+  let filedata = req.file;
+
+  if (!filedata) {
+    next();
+    console.log("Ошибка при загрузке файла");
+    res.send("Ошибка загрузки файла!");
+  } else {
+    next();
+    res.send("Файл загружен");
+  }
+});
+
 router.post("/", async (req, res) => {
   const {
     Image_Name,

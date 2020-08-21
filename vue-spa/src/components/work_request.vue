@@ -1,11 +1,12 @@
 <template>
   <section>
-    <h2 class="ui icon header message" v-if="result.Request==''||message" >
+    <h2 class="ui icon header message" v-if="result.Request==''||message">
       <i class="settings icon"></i>
       <div class="content">
         Дорогой Друг
-        <div class="sub header"><h2>{{message}}</h2></div>
-        
+        <div class="sub header">
+          <h2>{{message}}</h2>
+        </div>
       </div>
     </h2>
     <table class="ui violet table" v-else-if="result">
@@ -13,6 +14,7 @@
         <tr>
           <th>id</th>
           <th>Приоритет</th>
+          <th>Статус</th>
           <th>Тема</th>
           <th>ID TeamWeaver</th>
           <th>Отправитель</th>
@@ -25,17 +27,18 @@
           <td>{{request._id}}</td>
           <td v-if="request.Priority_Request">Срочно</td>
           <td v-else>Обычный</td>
+          <td>{{request.Status}}</td>
           <td>{{request.Theme_Request}}</td>
 
           <td>{{request.Id_TeamWeaver}}</td>
-          <td>{{request.Sender}}</td> 
+          <td>{{request.Sender}}</td>
           <td>{{request.Date_Request}}</td>
           <td>
             <a v-bind:href="url">
               <button @click="viewRequest(request._id)" class="ui blue button">Просмотреть заявку</button>
             </a>
-             
-              <button @click="closeRequest(request._id)" class="ui green button">Закрыть заявку</button>
+
+            <button @click="closeRequest(request._id)" class="ui green button">Закрыть заявку</button>
           </td>
         </tr>
       </tbody>
@@ -48,7 +51,7 @@ export default {
   name: "workRequest",
 
   computed: {
-     message(){
+    message() {
       return this.$store.getters.getMessageWork;
     },
     result() {
@@ -57,32 +60,31 @@ export default {
     getErr() {
       return this.$store.getters.getErr;
     },
-    Mail(){
+    Mail() {
       return this.$store.getters.getMail;
-    }
+    },
   },
   data() {
     return {
-      url: ""
+      url: "",
     };
   },
   mounted() {
     this.$store.dispatch("get_request_user_work", this.$store.getters.getMail);
   },
   methods: {
-    viewRequest: function(id) {
+    viewRequest: function (id) {
       this.url = "#/request/" + id;
     },
-    closeRequest:function(id){
-      const data ={
-        id:id,
-        mail: this.$store.getters.getMail 
-      }
-      this.$store.dispatch("close_request",data)
-    }
-  }
+    closeRequest: function (id) {
+      const data = {
+        id: id,
+        mail: this.$store.getters.getMail,
+      };
+      this.$store.dispatch("close_request", data);
+    },
+  },
 };
 </script>
 <style scoped>
-
 </style>

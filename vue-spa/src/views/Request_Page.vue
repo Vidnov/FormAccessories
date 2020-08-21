@@ -1,12 +1,12 @@
 <template>
   <section>
-    {{Request.Image_Name}}
+    
     <div
-      v-if="ViewRequest&Request.Complite===false"
+      v-if="ViewRequest&Request.Complite===false&Close==false"
       class="ui raised very padded text container segment"
     >
       <h2 class="ui header">
-        <i v-if="Request.Priority_Request" class="hotjar icon"></i>
+        <i v-if="Request.Priority_Request&Close==false" class="hotjar icon"></i>
       </h2>
       <h2 class="ui header">Заявка №{{ Request.id }}</h2>
       <h3>Тема: {{ Request.Theme_Request }}</h3>
@@ -31,28 +31,47 @@
           <a target="_blank" :href="Img_Path"><img :src="Img_Path"/></a>
       </p>
       <br />
-      <div v-if="Request" class="ui buttons">
+      <div v-if="Request.Status=='На Рассмотрении'&Close==false" class="ui buttons">
         <button class="ui positive button" v-on:click="accept(Request.Complite)">Принять</button>
         <div class="or"></div>
         <button class="ui button">Отказаться</button>
       </div>
+      <div v-else-if="Request.Status=='В работе'&Close==false" class="ui buttons">
+        <button class="ui positive button"  @click="closeRequest(Request.id)">Закрыть</button>
+        <div class="or"></div>
+        <button class="ui button">Отказаться</button>
+      </div>
+      <div v-else-if="Request.Status=='Закрыта'" class="ui buttons">
+        <button class="ui button">Отказаться</button>
+      </div>
     </div>
     <calendar v-else-if="Request.Complite===true" v-bind:id="Request.id"/>
-    <div v-else>
+   
+     
+    <div v-else-if="Close===false">
       <div class="ui negative message">
         <div class="header">{{Message}}</div>
         <p>Простите... Мы не нашли такую заявку....</p>
       </div>
     </div>
+     <div v-if="Close===true" class="ui success message message_block">
+      <i class="close icon" v-on:click="close_message()"></i>
+      <div class="header">Заявка закрыта</div>
+      <p>Вы можете изменить заявку обратившись к администратору сайта</p>
+    </div>
+    <comments v-if="Close===true" v-bind:id="Request.id"/>
+   
   </section>
 </template>
 <script>
 import axios from "axios";
 import calendar from "../components/calendar";
+import comments from "../components/comments";
 export default {
   name: "RequestPage",
   data() {
     return {
+      Close:false, 
       Message: null,
       ViewRequest: true,
       Request: {
@@ -73,13 +92,28 @@ export default {
       hash: window.location.hash.slice(1)
     };
   },
+  computed:{
+      Info(){
+      return this.$store.getters.getInfo;
+    },
+  },
   methods: {
      accept:function(Complite) {
       this.Request.Complite= !Complite
-     }
+     },
+      closeRequest:function(id){
+        this.Close=true
+        console.log(this.$store.getters.getMail )
+      const data ={
+        id:id,
+        mail: this.$store.getters.getMail 
+      }
+      this.$store.dispatch("close_request",data)
+    }
   },
   components: {
-    calendar
+    calendar,
+    comments
   },
   mounted() {
     axios

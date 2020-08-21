@@ -121,7 +121,6 @@ export default {
         }
      
       }
-       console.log(image_obj(this.Image))
       if (
         this.Priority_Request == null ||
         this.Sender == null ||
