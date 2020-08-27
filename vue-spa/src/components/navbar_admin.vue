@@ -1,6 +1,5 @@
 <template>
-  <div v-if="roleAdmin===true" class="ui attached stackable menu">
-    
+  <div v-if="roleAdmin===true||roleAdmin==='true'" class="ui attached stackable menu">
     <div class="ui container">
       <a href="#/main" class="item">
         <i class="home icon"></i> Главная

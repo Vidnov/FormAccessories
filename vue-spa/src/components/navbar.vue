@@ -20,7 +20,7 @@
 export default {
   name: "navbar",
    props:{
-      role:Boolean
+      role:String
   }
 };
 </script>

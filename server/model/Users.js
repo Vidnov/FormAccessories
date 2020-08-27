@@ -35,9 +35,9 @@ const schema = new Schema({
       },
       Priority_Request: {
         //Необходимо  изменить  на  тип String
-        type: Boolean,
+        type: String,
         required: true,
-        default: false,
+        default: "false",
       },
       Id_TeamWeaver: {
         type: Number,

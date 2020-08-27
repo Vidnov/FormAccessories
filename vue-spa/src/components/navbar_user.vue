@@ -1,6 +1,5 @@
 <template>
-  <div v-if="roleUser===false" class="ui attached stackable menu">
-    
+  <div  v-if="roleUser!=='true'&roleUser!==undefined&roleUser!==true" class="ui attached stackable menu">
     <div class="ui container">
       <a href="#/main" class="item">
         <i class="home icon"></i> Главная
@@ -21,6 +20,11 @@
     <script>
 export default {
   name: "navbar_user",
+  data(){
+    return{
+
+    }
+  },
   methods:{
       exit() {
       this.$store.dispatch("exit");

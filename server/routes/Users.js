@@ -3,14 +3,19 @@ var router = express.Router();
 const Users = require("../model/Users");
 
 router.post("/login", (req, res) => {
- // console.log(req.body);
   const {Login,Password } = req.body;
   Users.findOne({ Mail: Login,Password:Password })
     .then((result) => {
-     // console.log(result)
-      res.status("200").send(result);
+      if(result===null){
+        res.status(201).send("Логин или пароль введен не верно либо не существует")
+      }else{
+        res.status(200).send(result);
+      }
+      
     })
-    .catch((e) => res.status(404).send(e));
+    .catch((e) => {
+      console.log('При авторизации вернулась ошибка',e)
+      res.status(404).send(e)});
 });
 
 router.post("/deliteuser", (req, res) => {
@@ -20,7 +25,7 @@ router.post("/deliteuser", (req, res) => {
     }
   }).then((result) => {
     Users.find({}).then((result) => res.send(result));
-   // console.log(result);
+
   });
 });
 
@@ -48,7 +53,6 @@ router.post("/create", (req, res) => {
     if (err) return console.log(err);
   })
     .then((result) => {
-     // console.log("В базе нашлось", result);
       if (result == null) {
         Users.create({
           First_Name: first_name,
@@ -70,9 +74,6 @@ router.post("/create", (req, res) => {
             res.send("При попытке создать пользователя произошла ошибка");
           });
       } else {
-        // console.log(
-        //   "Пользователь с почтовым ящиком " + email + " уже существует"
-        // );
         res.send("Пользователь с почтовым ящиком " + email + " уже существует");
       }
     })

@@ -17,18 +17,27 @@
       </div>
       <button @click="sending_data_login()" class="ui button">Войти</button>
     </form>
+    <Err v-if="Error_login" v-bind:error_message="Error_login"/>
+    {{Error_login}}
   </section>
 </template>
 
 <script>
 import axios from "axios";
+import Err from '../components/error';
 export default {
   name: "login",
   data() {
     return {
       User: { Login: null, Password: null },
-      Result: null
+      Result: true
     };
+  },
+  computed:{
+      Error_login(){
+        this.Result=false;
+      return this.$store.getters.getErr;
+    }
   },
   methods: {
     sending_data_login: function() {
@@ -36,9 +45,14 @@ export default {
       this.$store.dispatch("get_request_user",this.User);
       this.User.Login=null,
       this.User.Password=null
-      this.$router.push("/main").catch(err => console.err(err));
-     
+      if(this.Result){
+        this.$router.push("/main").catch(err => console.err(err));
+      }
+      
     }
+  },
+  components:{
+    Err
   }
 };
 </script>
