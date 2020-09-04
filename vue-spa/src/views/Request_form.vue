@@ -4,7 +4,7 @@
     <div class="container" v-else>
       <h1 class="ui dividing header">Создать заявку</h1>
       <div class="ui placeholder segment">
-        <div class="ui form">
+        <div class="ui reply form">
           <h4>Приоритет заявки</h4>
           <div class="select">
             <select v-model="Priority_Request">
@@ -54,7 +54,7 @@
               </div>
 
               <h4>Суть проблемы</h4>
-              <div class="field">
+              <div>
                 <label>Text</label>
                 <textarea v-model="Text_Request"></textarea>
               </div>
@@ -195,4 +195,5 @@ section {
 option {
   height: 150px;
 }
+
 </style>

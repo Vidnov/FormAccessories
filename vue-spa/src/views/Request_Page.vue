@@ -46,7 +46,6 @@
       </div>
     </div>
     <calendar v-else-if="Request.Complite===true" v-bind:id="Request.id"/>
-   
      
     <div v-else-if="Close===false">
       <div class="ui negative message">
@@ -60,13 +59,14 @@
       <p>Вы можете изменить заявку обратившись к администратору сайта</p>
     </div>
     <comments v-if="Close===true" v-bind:id="Request.id"/>
-   
+   <commentsBlock/>
   </section>
 </template>
 <script>
 import axios from "axios";
 import calendar from "../components/calendar";
 import comments from "../components/comments";
+import commentsBlock from "../components/comments_block";
 export default {
   name: "RequestPage",
   data() {
@@ -113,7 +113,8 @@ export default {
   },
   components: {
     calendar,
-    comments
+    comments,
+    commentsBlock
   },
   mounted() {
     axios

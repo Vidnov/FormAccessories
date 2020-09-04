@@ -82,7 +82,7 @@ export default {
       axios
         .post("http://localhost:3000/request/comments", {
           Id:this.$props.id,
-          Comments: this.Comments,
+          Comment: this.Сomments,
           ImageName: this.ImageName,
         })
         .then((res) => {

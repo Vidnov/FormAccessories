@@ -92,6 +92,26 @@ const schema = new Schema({
         // Прикрепляем скрин к закрытию заявки
         type: String,
       },
+      Comments_block:[{ 
+        //Схема комментариев
+          Date_Comments:{
+            type:Date,
+            default:Date.now()
+          },
+          Sender_Comments:{
+            type:String
+          },
+          Avatar_Sender:{
+            type:String
+          },
+          Status_Comments:{
+            type:String
+          },
+          Text_Comments:{
+            type:String
+          }
+        }
+      ]
     },
   ],
 });

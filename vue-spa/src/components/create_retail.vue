@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="field">
-        <label>Платёжный адресс</label>
+        <label>Платёжный адрес</label>
         <div class="fields">
           <div class="twelve wide field">
             <input type="text" name="shipping[address]" placeholder="Улица " />

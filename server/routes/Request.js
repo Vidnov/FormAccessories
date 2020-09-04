@@ -3,6 +3,7 @@ var router = express.Router();
 const Users = require("../model/Users");
 const { request } = require("express");
 const e = require("express");
+const FindRequestById = require('../controllers/FindRequestById')
 
 router.post("/get_request_user_close", (req, res) => {
   result_sort_request = [];
@@ -37,16 +38,21 @@ router.post("/get_request_user_close", (req, res) => {
 });
 
 router.post("/comments", (req, res) => {
-  const { Id, Comments, ImageName } = req.body;
+  const { Id, Comment, ImageName } = req.body;
+  console.log(req.body);
   const result = "";
   const err = "";
-  console.log(Comments);
   Users.findOne({ "Request._id": Id })
     .then((result) => {
       result.Request.forEach((request) => {
         if (request._id == Id) {
-          request.Comments = Comments;
+          console.log(Comment);
+          request.Comments = Comment;
           request.Image_Name_Comments = ImageName;
+          request.Comments_block.forEach(element => {
+            console.log(element)
+            element.Text_Comments=Comment;
+          });
         }
       });
       result.save((e, doc) => {
@@ -66,6 +72,14 @@ router.post("/comments", (req, res) => {
   } else {
     res.send("Not Found Response");
   }
+});
+router.get("/get_comment/:id", (req, res) => {
+  
+  const id = req.params.id;
+  FindRequestById(id).then(result=>{
+    res.send(result.Comments_block);
+  })
+  
 });
 router.post("/close_request", (req, res) => {
   const { Mail, id } = req.body;

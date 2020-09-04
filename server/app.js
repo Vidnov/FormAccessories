@@ -8,7 +8,7 @@ const config = require("./config");
 const Users = require("./model/Users");
 const path =require('path')
 //require Routes
-const requestImage =require('./routes/Image')
+
 const indexRouter= require('./routes/Index')
 const sendRouter= require('./routes/Send')
 const markRouter= require('./routes/Mark')
@@ -30,7 +30,7 @@ app.use('/getmark',markRouter)
 app.use('/mail',mailRouter)
 app.use('/users/',usersRouter)
 app.use('/request/',requestRouter)
-app.use('/image/',requestImage)
+
 
 app.use(multer({dest:"uploads"}).single("filedata"));
 
