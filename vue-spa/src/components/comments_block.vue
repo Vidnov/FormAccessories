@@ -1,7 +1,6 @@
 <template>
   <div class="ui comments block_comments">
     <h3 class="ui dividing header">Comments</h3>
-    {{ReqId}}
    
     <div class="comment"  v-for="(Comment,index) in Comments" v-bind:key='index'>
       <a class="avatar">
@@ -31,7 +30,7 @@
 </template>
 
 <script>
-import Axios from "axios";
+import axios from "axios";
 export default {
   name: "commentsBlock",
   computed: {},
@@ -50,7 +49,7 @@ export default {
           Sender:localStorage.HelpDeskMail
         })
         .then((res) => {
-          this.Result_Status ="true";
+
           this.Result = res.data;
 
         })
@@ -63,8 +62,10 @@ export default {
   mounted() {
   },
   components: {},
-  props: { Comments: Array ,
-  ReqId:String },
+  props: { 
+    
+    Comments: Array ,
+    ReqId:String },
 };
 </script>
 

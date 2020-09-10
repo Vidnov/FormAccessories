@@ -27,4 +27,17 @@ router.get("/allretail", (req, res) => {
     res.send(result);
   });
 });
+router.post("/deliteretail", (req, res) => {
+  const{id}=req.body
+  Retail.deleteOne({ _id: id })
+    .then((result) => {
+      Retail.find({}).then(r=>{
+        res.send(r);
+      })
+    
+    })
+    .catch((e) => {
+      res.send(e);
+    });
+});
 module.exports = router;

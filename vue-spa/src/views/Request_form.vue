@@ -15,9 +15,7 @@
           <h4>Точка</h4>
           <div class="select">
             <select class="ui fluid dropdown" v-model="Sender">
-              <option value="Шуя Васелевского">Шуя Васелевского</option>
-              <option value="Кострома Ткачей">Кострома Ткачей</option>
-              <option value="Ленина 7">Ленина 7</option>
+              <option  v-for="(Retail, i) in Retails" v-bind:key="i" v-bind:value="Retail.Mail_Retail">{{Retail.Address_Retail}}</option>
             </select>
           </div>
           <h4>Введите ID TeamWeaver</h4>
@@ -91,6 +89,7 @@ export default {
       Text_Request: null,
       Result_Request: "",
       Error_Request: "",
+      Retails: "",
     };
   },
   components: {
@@ -102,6 +101,10 @@ export default {
       .then((res_user) => {
         this.Recipients = res_user.data;
       });
+
+    axios.get("http://localhost:3000/retail/allretail").then((retail) => {
+      this.Retails = retail.data;
+    });
   },
   methods: {
     sync: function (e) {
@@ -109,18 +112,17 @@ export default {
       this.Image = e.target.files[0];
     },
     send: function () {
-
-        let image_obj =(image)=>{
-         if (image != "") {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-        const ext = image.name.split(".").reverse()[0];
-        this.ImageName = uniqueSuffix + "." + ext;
-        let formData = new FormData();
-        formData.append("file", image, this.ImageName);
-         return formData
+      let image_obj = (image) => {
+        if (image != "") {
+          const uniqueSuffix =
+            Date.now() + "-" + Math.round(Math.random() * 1e9);
+          const ext = image.name.split(".").reverse()[0];
+          this.ImageName = uniqueSuffix + "." + ext;
+          let formData = new FormData();
+          formData.append("file", image, this.ImageName);
+          return formData;
         }
-     
-      }
+      };
       if (
         this.Priority_Request == null ||
         this.Sender == null ||
@@ -195,5 +197,4 @@ section {
 option {
   height: 150px;
 }
-
 </style>

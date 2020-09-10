@@ -41,6 +41,7 @@ router.post("/comments", (req, res) => { //создать комментарий
   const { Id, Comment, ImageName,Sender_Comments,Avatar_Sender} = req.body;
   const result = "";
   const err = "";
+  
   Users.findOne({ "Request._id": Id })
     .then((result) => {
       result.Request.forEach((request) => {
@@ -63,7 +64,11 @@ router.post("/comments", (req, res) => { //создать комментарий
       console.log(e);
     });
   if (result) {
-    res.sendStatus(200).send(result);
+    FindRequestById(id).then((result) => {
+      console.log(result.Comments_block)
+      res.send(result.Comments_block);
+    })
+   
   } else if (err) {
     res.sendStatus(500).send(e);
   } else {

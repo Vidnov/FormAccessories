@@ -1,6 +1,5 @@
 <template>
   <section>
-    {{Comments_block}}
     <div
       v-if="ViewRequest&Request.Complite===false&Close==false"
       class="ui raised very padded text container segment"

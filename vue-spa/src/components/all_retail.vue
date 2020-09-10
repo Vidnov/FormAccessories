@@ -1,27 +1,27 @@
 <template>
-  <table class="ui violet table" >
-      {{Message}}
+  <table class="ui violet table">
     <thead>
       <tr>
         <th>Код точки</th>
         <th>Адрес</th>
         <th>Диллер</th>
         <th>E-Mail</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
+      <tr v-for="(Retail, i) in Message" v-bind:key="i">
+        <td>{{Retail.Code_Retail}}</td>
+        <td>{{Retail.Address_Retail}}</td>
+        <td>{{Retail.Diller}}</td>
+        <td>{{Retail.Mail_Retail}}</td>
         <td>
-          <a>
-            <button class="ui blue button">Редактировать точку</button>
-          </a>
+          <button @click="deliteRetail(Retail._id)" class="ui red button">Удалить</button>
         </td>
       </tr>
     </tbody>
+    {{Delite}}
+    {{Err_}}
   </table>
 </template>
 <script>
@@ -30,18 +30,36 @@ export default {
   name: "All_Retail",
   data() {
     return {
-        Message:''
+      Message: "",
+      Delite: "",
+      Err_: "",
     };
   },
   mounted() {
     axios
       .get("http://localhost:3000/retail/allretail")
-      .then(response => {
+      .then((response) => {
         this.Message = response.data;
       })
-      .catch(e => (err_list = e));
+      .catch((e) => (this.Err_ = e));
   },
-  methods: {},
+  methods: {
+    deliteRetail: function (id) {
+      axios
+        .post("http://localhost:3000/retail/deliteretail", {
+          id: id,
+          headers: {
+            Accept: "application/json",
+            "access-Control-Allow-Origin": "http://localhost:3000/",
+          },
+          mode: "no-cors",
+        })
+        .then((response) => {
+          this.Message = response.data;
+        })
+        .catch((err) => (this.Err_ = err));
+    },
+  },
   components: {},
 };
 </script>
