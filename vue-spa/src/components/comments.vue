@@ -1,6 +1,6 @@
 <template>
   <div class="ui raised very padded text container segment">
-    {{Сomments}}
+    
     <div v-if="Result_Status==''" class="ui form">
       <div class="field">
         <h1>Вы можете оставить комментарий и прикрепить скрин</h1>
@@ -78,12 +78,12 @@ export default {
             this.Error_ = err;
           });
       }
-      console.log(this.Сomments)
+  
       axios
         .post("http://localhost:3000/request/comments", {
           Id:this.$props.id,
           Comment: this.Сomments,
-          ImageName: this.ImageName,
+          ImageName: this.ImageName
         })
         .then((res) => {
           this.Result_Status ="true";

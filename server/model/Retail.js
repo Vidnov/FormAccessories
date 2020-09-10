@@ -2,21 +2,21 @@ const Mongoose = require('mongoose')
 const Schema = Mongoose.Schema;
 
 const schema = new Schema({
-    brand:{
+    Diller:{
         type:String,
         required:true
     },
-    mail:{
+    Mail_Retail:{
         type:String,
         required:true
     },
-    address:{
+    Address_Retail:{
         type:String,
         required:true
     },
-    phone:{
+    Code_Retail:{
         type:String,
-        required:false
+        required:true
     }
 })
 

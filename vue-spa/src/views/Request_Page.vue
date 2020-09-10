@@ -1,6 +1,6 @@
 <template>
   <section>
-    
+    {{Comments_block}}
     <div
       v-if="ViewRequest&Request.Complite===false&Close==false"
       class="ui raised very padded text container segment"
@@ -46,7 +46,6 @@
       </div>
     </div>
     <calendar v-else-if="Request.Complite===true" v-bind:id="Request.id"/>
-     
     <div v-else-if="Close===false">
       <div class="ui negative message">
         <div class="header">{{Message}}</div>
@@ -59,7 +58,7 @@
       <p>Вы можете изменить заявку обратившись к администратору сайта</p>
     </div>
     <comments v-if="Close===true" v-bind:id="Request.id"/>
-   <commentsBlock/>
+   <commentsBlock v-if="Request.Status=='Закрыта'" v-bind:Comments="Comments_block" v-bind:ReqId="Request.id"/>
   </section>
 </template>
 <script>
@@ -85,7 +84,8 @@ export default {
         Text_Request: null,
         Theme_Request: null,
         id: null,
-        Complite: false
+        Complite: false,
+        Comments_block:[]
       },
       protocol: window.location.protocol,
       host: window.location.host,
@@ -120,7 +120,7 @@ export default {
     axios
       .get("http://localhost:3000" + this.hash)
       .then(res => {
-        console.log(this.hash);
+        console.log(res.data)
         if (res.status == 200) {
           this.Request.Date_Request = res.data.Date_Request;
           this.Request.id = res.data._id;
@@ -133,6 +133,7 @@ export default {
           this.Request.Theme_Request = res.data.Theme_Request;
           this.Request.Image_Name = res.data.Image_Name;
           this.Img_Path='http://localhost:3000/'+this.Request.Image_Name
+          this.Comments_block=res.data.Comments_block
         } else {
           this.ViewRequest = false;
           this.Message = res.data;

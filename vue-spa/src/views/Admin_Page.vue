@@ -6,25 +6,23 @@
         <div class="item">
           <div class="header">Заявки</div>
           <div class="menu">
-            <a class="item" @click="switchViews('tablerequest')">
-              Все заявки
-              </a>
+            <a class="item" @click="switchViews('tablerequest')">Все заявки</a>
             <a class="item">Горящие</a>
           </div>
         </div>
         <div class="item">
           <div class="header">Пользователи</div>
           <div class="menu">
-            <a class="item"  @click="switchViews('listusers')">Пользователи</a>
-            <a class="item"  @click="switchViews('createusers')">Завести нового пользователя</a> 
+            <a class="item" @click="switchViews('listusers')">Пользователи</a>
+            <a class="item" @click="switchViews('createusers')">Завести нового пользователя</a>
             <a class="item">PHP</a>
           </div>
         </div>
         <div class="item">
           <div class="header">Точки</div>
           <div class="menu">
-            <a class="item">Список точек</a>
-            <a class="item"  @click="switchViews('createretail')">Создать точку</a> 
+            <a class="item" @click="switchViews('allretail')">Список точек</a>
+            <a class="item" @click="switchViews('createretail')">Создать точку</a>
           </div>
         </div>
         <div class="item">
@@ -36,13 +34,14 @@
         </div>
       </div>
 
-      <component v-bind:is="views"> </component>
+      <component v-bind:is="views"></component>
     </div>
   </section>
 </template>
 
 <script>
 import axios from "axios";
+import allretail from "../components/all_retail";
 import tablerequest from "../components/table_request";
 import createusers from "../components/create_user";
 import createretail from "../components/create_retail";
@@ -52,20 +51,20 @@ export default {
   data() {
     return {
       views: "tablerequest",
-
     };
   },
   methods: {
-    switchViews: function(views) {
+    switchViews: function (views) {
       this.views = views;
-    }
+    },
   },
   components: {
     tablerequest,
     createusers,
     listusers,
-    createretail
-  }
+    createretail,
+    allretail,
+  },
   // props: ['post'],
 };
 </script>
@@ -77,11 +76,9 @@ export default {
   grid-template-columns: min-content auto;
 }
 section {
-
   text-align: center;
 }
-.create_user{
-  text-align:left
+.create_user {
+  text-align: left;
 }
-
 </style>

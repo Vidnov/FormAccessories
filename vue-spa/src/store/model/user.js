@@ -15,11 +15,15 @@ export default {
     MessageWork: "",
     MessageClose: "",
     Info: "",
-    Status:''
+    Status:'',
+    Comments:''
   },
   getters: {
     getRole(state) {
       return state.Role;
+    },
+    getComments(state){
+      return state.Comments;
     },
     getMail(state) {
       return state.Mail;
@@ -53,6 +57,8 @@ export default {
     }
   },
   actions: {
+    get_comments({commit},id){
+    },
     get_request_user_close({ commit }, Mail) {
       axios({
         method: "post",

@@ -84,14 +84,11 @@ const schema = new Schema({
       Image: {
         type: String,
       },
-      Comments: {
-        // Комментарий при закрытии заявки
-        type: String,
-      },
-      Image_Name_Comments: {
-        // Прикрепляем скрин к закрытию заявки
-        type: String,
-      },
+      // Comments: {
+      //   // Комментарий при закрытии заявки
+      //   type: String,
+      // },
+      
       Comments_block:[{ 
         //Схема комментариев
           Date_Comments:{
@@ -109,7 +106,11 @@ const schema = new Schema({
           },
           Text_Comments:{
             type:String
-          }
+          },
+          Image_Name_Comments: {
+            // Прикрепляем скрин к закрытию заявки
+            type: String,
+          },
         }
       ]
     },

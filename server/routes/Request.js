@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const Users = require("../model/Users");
-const { request } = require("express");
-const e = require("express");
-const FindRequestById = require('../controllers/FindRequestById')
+//const { request } = require("express");
+// const e = require("express");
+const FindRequestById = require("../controllers/FindRequestById");
 
 router.post("/get_request_user_close", (req, res) => {
   result_sort_request = [];
@@ -37,21 +37,18 @@ router.post("/get_request_user_close", (req, res) => {
     });
 });
 
-router.post("/comments", (req, res) => {
-  const { Id, Comment, ImageName } = req.body;
-  console.log(req.body);
+router.post("/comments", (req, res) => { //создать комментарий
+  const { Id, Comment, ImageName,Sender_Comments,Avatar_Sender} = req.body;
   const result = "";
   const err = "";
   Users.findOne({ "Request._id": Id })
     .then((result) => {
       result.Request.forEach((request) => {
         if (request._id == Id) {
-          console.log(Comment);
-          request.Comments = Comment;
-          request.Image_Name_Comments = ImageName;
-          request.Comments_block.forEach(element => {
-            console.log(element)
-            element.Text_Comments=Comment;
+          request.Comments_block.push({
+            Text_Comments: Comment,
+            Image_Name_Comments: ImageName,
+            Sender_Comments:Sender_Comments
           });
         }
       });
@@ -59,7 +56,7 @@ router.post("/comments", (req, res) => {
         if (e) {
           const err = e;
         }
-        result = doc;
+        console.log(doc);
       });
     })
     .catch((e) => {
@@ -74,12 +71,14 @@ router.post("/comments", (req, res) => {
   }
 });
 router.get("/get_comment/:id", (req, res) => {
-  
   const id = req.params.id;
-  FindRequestById(id).then(result=>{
+  FindRequestById(id).then((result) => {
+    console.log(result.Comments_block)
     res.send(result.Comments_block);
   })
-  
+  .catch(e=>{
+    console.error(e)
+  })
 });
 router.post("/close_request", (req, res) => {
   const { Mail, id } = req.body;
@@ -215,6 +214,7 @@ router.post("/get_user_request", (req, res) => {
 
 router.post("/request_update_date", (req, res) => {
   const { id, date } = req.body;
+  console.log(req.body)
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((element) => {
@@ -222,6 +222,7 @@ router.post("/request_update_date", (req, res) => {
           element.Date_execution = date;
           element.Seen = true;
           element.Status = "В работе";
+          console.log('ok')
         }
       });
       result.save(function (err, doc) {
@@ -235,6 +236,7 @@ router.post("/request_update_date", (req, res) => {
       });
     })
     .catch((err) => {
+      console.log(err)
       res.sendStatus(500).send("Внутрення ошибка сервера", err);
     });
 });

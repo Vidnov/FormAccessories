@@ -1,58 +1,29 @@
 <template>
   <div class="ui comments block_comments">
     <h3 class="ui dividing header">Comments</h3>
-    <div class="comment">
+    {{ReqId}}
+   
+    <div class="comment"  v-for="(Comment,index) in Comments" v-bind:key='index'>
       <a class="avatar">
-        <img src="/images/avatar/small/matt.jpg" />
+        <img src />
       </a>
       <div class="content">
-        <a class="author">Matt</a>
+        <a class="author">Comment</a>
         <div class="metadata">
-          <span class="date">Today at 5:42PM</span>
+          <span class="date">{{Comment.Date_Comments}}</span>
         </div>
-        <div class="text">How artistic!</div>
+        <div class="text">{{Comment.Text_Comments}}</div>
         <div class="actions">
           <a class="reply">Reply</a>
-        </div>
-      </div>
-    </div>
-    <div class="comment">
-      <a class="avatar">
-        <img src="/images/avatar/small/elliot.jpg" />
-      </a>
-      <div class="content">
-        <a class="author">Elliot Fu</a>
-        <div class="metadata">
-          <span class="date">Yesterday at 12:30AM</span>
-        </div>
-        <div class="text">
-          <p>This has been very useful for my research. Thanks as well!</p>
-        </div>
-        <div class="actions">
-          <a class="reply">Reply</a>
-        </div>
-      </div>
-    </div>
-    <div class="comment">
-      <a class="avatar">
-        <img src="/images/avatar/small/joe.jpg" />
-      </a>
-      <div class="content">
-        <a class="author">Joe Henderson</a>
-        <div class="metadata">
-          <span class="date">5 days ago</span>
-        </div>
-        <div class="text">Dude, this is awesome. Thanks so much</div>
-        <div class="actions">
-          <a class="reply">Reply</a>
+           <a target="_blank" :href="'http://localhost:3000/'+Comment.Image_Name_Comments" v-if= Comment.Image_Name_Comments class="reply">img</a>
         </div>
       </div>
     </div>
     <form class="ui reply form">
       <div class="field">
-        <textarea></textarea>
+        <textarea v-model="Text_Comments"></textarea>
       </div>
-      <div class="ui blue labeled submit icon button">
+      <div v-on:click='senderCommit(ReqId)' class="ui blue labeled submit icon button">
         <i class="icon edit"></i> Add Reply
       </div>
     </form>
@@ -60,26 +31,49 @@
 </template>
 
 <script>
-import axios from "axios";
+import Axios from "axios";
 export default {
   name: "commentsBlock",
   computed: {},
+
   data() {
-    return {};
+    return {
+      Text_Comments:''
+    };
   },
-  methods: {},
+  methods: {
+    senderCommit:function(ReqId){
+     axios
+        .post("http://localhost:3000/request/comments", {
+          Id:ReqId,
+          Comment: this.Text_Comments,
+          Sender:localStorage.HelpDeskMail
+        })
+        .then((res) => {
+          this.Result_Status ="true";
+          this.Result = res.data;
+
+        })
+        .catch((e) => {
+          this.Error_Status = "true";
+          this.Error_ = e;
+        });
+    }
+  },
+  mounted() {
+  },
   components: {},
-  props: {},
+  props: { Comments: Array ,
+  ReqId:String },
 };
 </script>
 
 <style scoped>
 .block_comments {
-    width: auto;
-    margin: 0 auto;
+  width: auto;
+  margin: 0 auto;
 }
 .comments {
   text-align: left;
-
 }
 </style>
