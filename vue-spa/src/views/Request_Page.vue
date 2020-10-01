@@ -105,7 +105,8 @@ export default {
         console.log(this.$store.getters.getMail )
       const data ={
         id:id,
-        mail: this.$store.getters.getMail 
+        mail: this.$store.getters.getMail ,
+        mail_retail: this.Request.Sender
       }
       this.$store.dispatch("close_request",data)
     }

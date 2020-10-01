@@ -1,6 +1,6 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
-
+// Оповещение о создании заявки
 async function CreateMail(service,user,password,recipient,sender,priority,text){
 //let testEmailAccount = await nodemailer.createTransport();
 if(priority=='true')

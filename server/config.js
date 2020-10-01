@@ -4,8 +4,8 @@ mongoose.connect('mongodb+srv://admin:419153@main-ztx6n.mongodb.net/test?retryWr
     if(err){
         return console.log(err);  
     }
+    else return console.log('База данных подключена!')
 })
-.then(r=>console.log("Подключение к базе данных MongoDB прошло успешно "))
 .catch(e=>console.error(e))
 
 

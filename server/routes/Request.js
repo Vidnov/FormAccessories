@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
 const Users = require("../model/Users");
-//const { request } = require("express");
-// const e = require("express");
+const Retails = require("../model/Retail");
 const FindRequestById = require("../controllers/FindRequestById");
-
+const CloseRequestMail = require("../controllers/CloseRequestMail");
+const FindRetailByAddress = require("../controllers/FindRetailByAddress");
 router.post("/get_request_user_close", (req, res) => {
   result_sort_request = [];
   const Mail = req.body.Mail;
@@ -22,10 +22,6 @@ router.post("/get_request_user_close", (req, res) => {
           });
         });
         result.forEach((el) => {
-          console.log(
-            "Закрытые заявки которые отправляются клиенту",
-            result_sort_request
-          );
           el.Request = result_sort_request;
         });
         res.send(result);
@@ -37,11 +33,11 @@ router.post("/get_request_user_close", (req, res) => {
     });
 });
 
-router.post("/comments", (req, res) => { //создать комментарий
-  const { Id, Comment, ImageName,Sender_Comments,Avatar_Sender} = req.body;
+router.post("/comments", (req, res) => {
+  //создать комментарий
+  const { Id, Comment, ImageName, Sender, Avatar_Sender } = req.body;
   const result = "";
   const err = "";
-  
   Users.findOne({ "Request._id": Id })
     .then((result) => {
       result.Request.forEach((request) => {
@@ -49,7 +45,7 @@ router.post("/comments", (req, res) => { //создать комментарий
           request.Comments_block.push({
             Text_Comments: Comment,
             Image_Name_Comments: ImageName,
-            Sender_Comments:Sender_Comments
+            Sender_Comments: Sender,
           });
         }
       });
@@ -57,36 +53,29 @@ router.post("/comments", (req, res) => { //создать комментарий
         if (e) {
           const err = e;
         }
-        console.log(doc);
       });
     })
     .catch((e) => {
       console.log(e);
     });
-  if (result) {
-    FindRequestById(id).then((result) => {
-      console.log(result.Comments_block)
-      res.send(result.Comments_block);
-    })
-   
-  } else if (err) {
-    res.sendStatus(500).send(e);
-  } else {
-    res.send("Not Found Response");
-  }
+
+  FindRequestById(Id).then((result) => {
+    res.send(result.Comments_block);
+  });
 });
 router.get("/get_comment/:id", (req, res) => {
   const id = req.params.id;
-  FindRequestById(id).then((result) => {
-    console.log(result.Comments_block)
-    res.send(result.Comments_block);
-  })
-  .catch(e=>{
-    console.error(e)
-  })
+  FindRequestById(id)
+    .then((result) => {
+      res.send(result.Comments_block);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 });
 router.post("/close_request", (req, res) => {
-  const { Mail, id } = req.body;
+  const { Mail, id, Mail_Retail } = req.body;
+  console.log(req.body);
   const result_sort_request = [];
   Users.findOne({ "Request._id": id })
     .then((result) => {
@@ -100,13 +89,26 @@ router.post("/close_request", (req, res) => {
           res.sendStatus(500).end("Внутрення ошибка сервера");
           console.log(err);
         }
+
+        // Retails.findOne({"Mail_Retail": Mail_Retail})
+        //   .then((result) => {
+        //     console.log('ok',result)
+        //   })
+        //   .catch((e) => {
+        //     console.log(e)
+        //   });
+
+        FindRetailByAddress(Mail_Retail).then((Retail) => {
+          console.log(Retail);
+          CloseRequestMail(Retail.Mail_Retail, id);
+        });
+        
         Users.find({
           Mail: Mail,
           "Request.Seen": true,
           "Request.Status": "В работе",
         }).then((result) => {
           if (result == "") {
-            console.log("Заявок в работе нет");
             res.status(200).send("Заявок в работе нет");
           } else {
             result.forEach((element) => {
@@ -116,12 +118,9 @@ router.post("/close_request", (req, res) => {
                 }
               });
               result.forEach((el) => {
-                console.log(
-                  "Заявки в  работе которые отправляются клиенту",
-                  result_sort_request
-                );
                 el.Request = result_sort_request;
               });
+
               res.status(200).send(result);
             });
           }
@@ -153,10 +152,6 @@ router.post("/get_request_user_work", (req, res) => {
             }
           });
           result.forEach((el) => {
-            console.log(
-              "Заявки в  работе которые отправляются клиенту",
-              result_sort_request
-            );
             el.Request = result_sort_request;
           });
           res.status(200).send(result);
@@ -179,7 +174,6 @@ router.post("/get_user_request_new", (req, res) => {
     .then((result) => {
       if (result == "") {
         res.status(200).send("Новых заявок нет");
-        console.log("Извините новых заявок нет");
       } else {
         result.forEach((element) => {
           element.Request.forEach((request) => {
@@ -206,7 +200,6 @@ router.post("/get_user_request", (req, res) => {
   Users.find({ Mail: req.body.user })
     .then((result) => {
       if (result == "") {
-        console.log("я ничего не получил");
         res.status(200).send("Список заявок пуст!");
       } else {
         res.status(200).send(result);
@@ -219,7 +212,6 @@ router.post("/get_user_request", (req, res) => {
 
 router.post("/request_update_date", (req, res) => {
   const { id, date } = req.body;
-  console.log(req.body)
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((element) => {
@@ -227,7 +219,6 @@ router.post("/request_update_date", (req, res) => {
           element.Date_execution = date;
           element.Seen = true;
           element.Status = "В работе";
-          console.log('ok')
         }
       });
       result.save(function (err, doc) {
@@ -241,7 +232,6 @@ router.post("/request_update_date", (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(err)
       res.sendStatus(500).send("Внутрення ошибка сервера", err);
     });
 });
@@ -255,7 +245,7 @@ router.get("/allrequest", (req, res) => {
 });
 router.post("/delete/:_id", (req, res) => {
   const id = req.body.body;
-  console.log(id);
+
   Users.findOne({ "Request._id": id })
     .then((result) => {
       result.Request.forEach((el, index) => {
@@ -283,7 +273,6 @@ router.get("/:_id", (req, res) => {
       return result.forEach((element) => {
         return element.Request.forEach((elementRequest) => {
           if (elementRequest._id == id) {
-            console.log(elementRequest);
             res.status(200).send(elementRequest);
           }
         });

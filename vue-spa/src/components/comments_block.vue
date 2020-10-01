@@ -1,20 +1,30 @@
 <template>
   <div class="ui comments block_comments">
     <h3 class="ui dividing header">Comments</h3>
-   
-    <div class="comment"  v-for="(Comment,index) in Comments" v-bind:key='index'>
+
+    <div
+      class="comment"
+      v-for="(Comment, index) in Comments"
+      v-bind:key="index"
+    >
       <a class="avatar">
         <img src />
       </a>
       <div class="content">
-        <a class="author">Comment</a>
+        <a class="author">{{ Comment.Sender_Comments }}</a>
         <div class="metadata">
-          <span class="date">{{Comment.Date_Comments}}</span>
+          <span class="date">{{ Comment.Date_Comments }}</span>
         </div>
-        <div class="text">{{Comment.Text_Comments}}</div>
+        <div class="text">{{ Comment.Text_Comments }}</div>
         <div class="actions">
           <a class="reply">Reply</a>
-           <a target="_blank" :href="'http://localhost:3000/'+Comment.Image_Name_Comments" v-if= Comment.Image_Name_Comments class="reply">img</a>
+          <a
+            target="_blank"
+            :href="'http://localhost:3000/' + Comment.Image_Name_Comments"
+            v-if="Comment.Image_Name_Comments"
+            class="reply"
+            >img</a
+          >
         </div>
       </div>
     </div>
@@ -22,7 +32,10 @@
       <div class="field">
         <textarea v-model="Text_Comments"></textarea>
       </div>
-      <div v-on:click='senderCommit(ReqId)' class="ui blue labeled submit icon button">
+      <div
+        v-on:click="senderCommit(ReqId)"
+        class="ui blue labeled submit icon button"
+      >
         <i class="icon edit"></i> Add Reply
       </div>
     </form>
@@ -37,35 +50,38 @@ export default {
 
   data() {
     return {
-      Text_Comments:''
+      Text_Comments: "",
     };
   },
   methods: {
-    senderCommit:function(ReqId){
-     axios
+    senderCommit: function (ReqId) {
+      axios
         .post("http://localhost:3000/request/comments", {
-          Id:ReqId,
+          Id: ReqId,
           Comment: this.Text_Comments,
-          Sender:localStorage.HelpDeskMail
+          Sender: localStorage.HelpDeskMail,
         })
         .then((res) => {
-
           this.Result = res.data;
-
         })
         .catch((e) => {
           this.Error_Status = "true";
           this.Error_ = e;
         });
-    }
+      this.$props.Comments.push({
+        Sender_Comments: localStorage.HelpDeskMail,
+        Text_Comments: this.Text_Comments,
+        Date_Comments: Date.now(),
+      });
+      this.Text_Comments = "";
+    },
   },
-  mounted() {
-  },
+  mounted() {},
   components: {},
-  props: { 
-    
-    Comments: Array ,
-    ReqId:String },
+  props: {
+    Comments: Array,
+    ReqId: String,
+  },
 };
 </script>
 

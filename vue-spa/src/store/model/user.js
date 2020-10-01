@@ -262,7 +262,8 @@ export default {
         url: "http://localhost:3000/request/close_request",
         data: {
           id: data.id,
-          Mail: data.mail
+          Mail: data.mail,
+          Mail_Retail:data.mail_retail
         }
       })
         .then(res => {
