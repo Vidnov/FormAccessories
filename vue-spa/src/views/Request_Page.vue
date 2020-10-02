@@ -15,8 +15,13 @@
       </p>
       <p>
         <b>Отправитель:</b>
+        {{Request.Address_Retail}} 
+      </p>
+       <p>
+        <b>E-Mail:</b>
         {{ Request.Sender }}
       </p>
+     
       <p>
         <b>Текст заявления:</b>
         <br />
@@ -84,6 +89,7 @@ export default {
         Theme_Request: null,
         id: null,
         Complite: false,
+        Address_Retail:null,
         Comments_block:[]
       },
       protocol: window.location.protocol,
@@ -128,6 +134,7 @@ export default {
           this.Request.Priority_Request = res.data.Priority_Request;
           this.Request.Recipiend = res.data.Recipient;
           this.Request.Sender = res.data.Sender;
+          this.Request.Address_Retail = res.data.Address_Retail;
           this.Request.Status = res.data.Status;
           this.Request.Text_Request = res.data.Text_Request;
           this.Request.Theme_Request = res.data.Theme_Request;

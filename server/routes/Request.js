@@ -4,7 +4,37 @@ const Users = require("../model/Users");
 const Retails = require("../model/Retail");
 const FindRequestById = require("../controllers/FindRequestById");
 const CloseRequestMail = require("../controllers/CloseRequestMail");
-const FindRetailByAddress = require("../controllers/FindRetailByAddress");
+const FindRetailByMail = require("../controllers/FindRetailByMail");
+const SaveNewCommentsById = require("../controllers/SaveNewCommentsById");
+//const EditStatusRequest = require("../controllers/EditStatusRequest");
+
+router.post("/comment_applicant/:id", async (req, res) => {
+  const { Id, Text_Comments } = req.body;
+  const date = new Date();
+  const Request = await FindRequestById(Id);
+  const Address_Retail = Request.Address_Retail;
+
+  SaveNewCommentsById(Id, Text_Comments, Address_Retail);
+  //EditStatusRequest(Id);
+
+  async function EditStatusRequest (id){
+    const request = await   Users.findOne({ "Request._id": id })
+    request.Request.forEach((request) => {
+      if (request._id == id) {
+        
+        request.Status = "На Рассмотрении";
+        
+      }
+    });
+   await request.save()
+   .catch(
+
+   )
+    console.log(request)
+  }
+  EditStatusRequest(Id)
+  res.send("ok");
+});
 router.post("/get_request_user_close", (req, res) => {
   result_sort_request = [];
   const Mail = req.body.Mail;
@@ -90,19 +120,11 @@ router.post("/close_request", (req, res) => {
           console.log(err);
         }
 
-        // Retails.findOne({"Mail_Retail": Mail_Retail})
-        //   .then((result) => {
-        //     console.log('ok',result)
-        //   })
-        //   .catch((e) => {
-        //     console.log(e)
-        //   });
-
-        FindRetailByAddress(Mail_Retail).then((Retail) => {
+        FindRetailByMail(Mail_Retail).then((Retail) => {
           console.log(Retail);
           CloseRequestMail(Retail.Mail_Retail, id);
         });
-        
+
         Users.find({
           Mail: Mail,
           "Request.Seen": true,

@@ -30,6 +30,7 @@ export default {
   computed: {},
   data() {
     return {
+      Sender:localStorage.HelpDeskMail,
       Сomments: "",
       Image: "",
       Result: "",
@@ -83,6 +84,7 @@ export default {
         .post("http://localhost:3000/request/comments", {
           Id:this.$props.id,
           Comment: this.Сomments,
+          Sender: this.Sender,
           ImageName: this.ImageName
         })
         .then((res) => {

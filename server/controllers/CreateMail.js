@@ -1,8 +1,8 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 // Оповещение о создании заявки
-async function CreateMail(service,user,password,recipient,sender,priority,text){
-//let testEmailAccount = await nodemailer.createTransport();
+async function CreateMail(service,user,password,recipient,sender, address_retail,priority,text){
+//let testEmailAccount = await nodemailer.createTransport(); 
 if(priority=='true')
 priority="Срочно!"
 else
@@ -19,10 +19,10 @@ let transporter = nodemailer.createTransport({
     from: '"HelpDesk" support@sotiks.net',
     to: recipient,
     subject:
-      "Новая заявка! "+priority,
+      "Новая заявка! "+priority+ address_retail,
     text:
-      "К вам поступило  новое обращение! \n" +
-      "Заявитель:" +sender+
+      "К вам поступило  новое обращение от "+address_retail+" ! \n" +
+      "Заявитель: " +sender+
       "\n" +
       "Текст Обращения: "+text,
   });

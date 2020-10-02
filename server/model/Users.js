@@ -47,7 +47,10 @@ const schema = new Schema({
         type: String,
         required: true,
       },
-
+      Address_Retail:{
+        type: String,
+        required: true,
+      },
       Recipient: {
         type: String,
         required: true,

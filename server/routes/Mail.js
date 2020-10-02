@@ -3,6 +3,7 @@ var router = express.Router();
 const multer = require("multer");
 const Users = require("../model/Users");
 const CreateMail = require("../controllers/CreateMail");
+const FindRetailByMail = require("../controllers/FindRetailByMail");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -30,7 +31,11 @@ router.post("/upload", upload.single("file"), function (req, res, next) {
   }
 });
 
-router.post("/upload_comments", upload.single("file"), function (req, res, next) {
+router.post("/upload_comments", upload.single("file"), function (
+  req,
+  res,
+  next
+) {
   let filedata = req.file;
 
   if (!filedata) {
@@ -54,14 +59,20 @@ router.post("/", async (req, res) => {
     Text_Request,
   } = req.body;
 
+  const Retail = await FindRetailByMail(Sender); //Получаем Точку по адресу почты
+  const Address_Retail = await Retail.Address_Retail;
+
+
   Users.findOne({ Mail: Mail })
     .then((result) => {
+      console.log(Address_Retail);
       result.Request.push({
         Image_Name: Image_Name,
         Priority_Request: Priority_Request,
         Id_TeamWeaver: Id_TeamWeaver,
         Sender: Sender,
         Recipient: Mail,
+        Address_Retail: Address_Retail,
         Theme_Request: Theme_Request,
         Text_Request: Text_Request,
       });
@@ -70,12 +81,14 @@ router.post("/", async (req, res) => {
           res.sendStatus(500).end("Внутрення ошибка сервера");
           return console.error(err);
         }
+
         CreateMail(
           "gmail",
           "nvidnov@gmail.com",
           "UFhybr419153!@",
           Mail,
           Sender,
+          Address_Retail,
           Priority_Request,
           Text_Request
         );

@@ -6,6 +6,7 @@ import Login from "../views/Login.vue";
 import AdminPage from "../views/Admin_Page.vue";
 import RequestPage from "../views/Request_Page.vue";
 import indexPage from "../views/Index_Page.vue";
+import Comment_Applicant from "../views/Comment_Applicant.vue";
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,11 @@ const routes = [
     path: "/request/:id",
     name: "requestPage",
     component: RequestPage
+  },
+  {
+    path: "/comment_retail/:id",
+    name: "Comment_Applicant",
+    component: Comment_Applicant
   },
   {
     path: "/test",
