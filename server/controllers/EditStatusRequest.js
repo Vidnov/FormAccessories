@@ -7,10 +7,8 @@ async function EditStatusRequest(id) {
       { "Request._id": id },
       {
         $set: {
-          Request: {
-            Seen: false,
-            Status: "На Рассмотрении",
-          },
+          "Request.$.Seen":false,
+          "Request.$.Status":"На Рассмотрении"
         },
       }
     )
