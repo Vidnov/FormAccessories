@@ -175,9 +175,7 @@ router.post("/get_request_user_work", (req, res) => {
 router.post("/get_user_request_new", (req, res) => {
   result_sort_request = [];
   Users.find({
-    Mail: req.body.user,
-    "Request.Seen": false,
-    "Request.Status": "На Рассмотрении",
+    $and:[{  Mail: req.body.user},{"Request.Seen": false},{"Request.Status": "На Рассмотрении"}]
   })
     .then((result) => {
       if (result == "") {
