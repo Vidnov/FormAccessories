@@ -6,7 +6,7 @@ const FindRequestById = require("../controllers/FindRequestById");
 const CloseRequestMail = require("../controllers/CloseRequestMail");
 const FindRetailByMail = require("../controllers/FindRetailByMail");
 const SaveNewCommentsById = require("../controllers/SaveNewCommentsById");
-//const EditStatusRequest = require("../controllers/EditStatusRequest");
+const EditStatusRequest = require("../controllers/EditStatusRequest");
 
 router.post("/comment_applicant/:id", async (req, res) => {
   const { Id, Text_Comments } = req.body;
@@ -15,24 +15,10 @@ router.post("/comment_applicant/:id", async (req, res) => {
   const Address_Retail = Request.Address_Retail;
 
   SaveNewCommentsById(Id, Text_Comments, Address_Retail);
-  //EditStatusRequest(Id);
 
-  async function EditStatusRequest (id){
-    const request = await   Users.findOne({ "Request._id": id })
-    request.Request.forEach((request) => {
-      if (request._id == id) {
-        
-        request.Status = "На Рассмотрении";
-        
-      }
-    });
-   await request.save()
-   .catch(
-
-   )
-    console.log(request)
-  }
   EditStatusRequest(Id)
+
+
   res.send("ok");
 });
 router.post("/get_request_user_close", (req, res) => {
