@@ -13,15 +13,10 @@ async function EditStatusRequest(id) {
       }
     )
       .then((r) => {
-        console.log(r);
-
-        Users.find({}).then((r) => {
-          console.log("asdads");
-          console.log(r);
-        });
+       res (r)
       })
       .catch((e) => {
-        console.log(e);
+        rej(e)
       });
   });
 }

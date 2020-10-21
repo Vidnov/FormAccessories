@@ -7,6 +7,7 @@
           <div class="header">Заявки</div>
           <div class="menu">
             <a class="item" @click="switchViews('tablerequest')">Все заявки</a>
+            <a class="item" @click="switchViews('findrequest')">Поиск заявки</a>
             <a class="item">Горящие</a>
           </div>
         </div>
@@ -46,6 +47,7 @@ import tablerequest from "../components/table_request";
 import createusers from "../components/create_user";
 import createretail from "../components/create_retail";
 import listusers from "../components/list_users";
+import findrequest from "../components/find_request_on_user";
 export default {
   name: "AdminPage",
   data() {
@@ -64,6 +66,7 @@ export default {
     listusers,
     createretail,
     allretail,
+    findrequest
   },
   // props: ['post'],
 };

@@ -11,7 +11,7 @@ const path =require('path')
 
 const indexRouter= require('./routes/Index')
 const sendRouter= require('./routes/Send')
-const markRouter= require('./routes/Mark')
+
 const mailRouter= require('./routes/Mail')
 const usersRouter= require('./routes/Users')
 const requestRouter= require('./routes/Request')
@@ -27,7 +27,6 @@ app.use(cors());
 // Routers
 app.use('/',indexRouter)
 app.use('/send',sendRouter)
-app.use('/getmark',markRouter)
 app.use('/mail',mailRouter)
 app.use('/users/',usersRouter)
 app.use('/request/',requestRouter)

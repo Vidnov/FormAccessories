@@ -7,17 +7,21 @@ const CloseRequestMail = require("../controllers/CloseRequestMail");
 const FindRetailByMail = require("../controllers/FindRetailByMail");
 const SaveNewCommentsById = require("../controllers/SaveNewCommentsById");
 const EditStatusRequest = require("../controllers/EditStatusRequest");
+const CreateMailApplicant = require("../controllers/CreateMailApplicant");
+const CreateMailEditDateRetail = require("../controllers/CreateMailEditDateRetail");
 
 router.post("/comment_applicant/:id", async (req, res) => {
   const { Id, Text_Comments } = req.body;
   const date = new Date();
   const Request = await FindRequestById(Id);
   const Address_Retail = Request.Address_Retail;
+console.log(Request)
+   SaveNewCommentsById(Id, Text_Comments, Address_Retail);
 
-  SaveNewCommentsById(Id, Text_Comments, Address_Retail);
+   EditStatusRequest(Id)
 
-  EditStatusRequest(Id)
-
+  CreateMailApplicant("gmail","nvidnov@gmail.com","UFhybr419153!@",Request.Recipient,Address_Retail,Request.Priority_Request,Text_Comments)
+ 
 
   res.send("ok");
 });
@@ -227,12 +231,16 @@ router.post("/request_update_date", (req, res) => {
           element.Status = "В работе";
         }
       });
-      result.save(function (err, doc) {
+      result.save( function (err, doc) {
         if (err) {
           res.sendStatus(500).end("Внутрення ошибка сервера");
           return console.error(err);
         }
-        Users.findOne({ "Request._id": id }).then((r) => {
+        Users.findOne({ "Request._id": id }).then( async (r) => {
+          const Request = await FindRequestById(id)
+          console.log(Request)
+          const Executor = r.Last_Name+' '+r.First_Name+' '+r.Middle_Name
+          CreateMailEditDateRetail('gmail',"nvidnov@gmail.com","UFhybr419153!@",Request.Sender,Executor,date,id)
           res.status(200).send("Запрос обработан успешно");
         });
       });
@@ -240,6 +248,8 @@ router.post("/request_update_date", (req, res) => {
     .catch((err) => {
       res.sendStatus(500).send("Внутрення ошибка сервера", err);
     });
+
+
 });
 
 router.get("/allrequest", (req, res) => {

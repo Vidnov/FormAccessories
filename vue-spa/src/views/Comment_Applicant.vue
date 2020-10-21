@@ -1,6 +1,6 @@
 <template>
   <div class="ui raised very padded text container segment">
-    <div class="ui form">
+    <div class="ui form" v-if="!Result">
       <div class="field">
         <h1>Вы Отклонили Завершение заявки №{{id}}</h1>
         <h3>Опишите ниже причину и прикрепите скриншот</h3>
@@ -51,6 +51,7 @@ export default {
         })
         .then((res) => {
           this.Result = res.data;
+
         })
         .catch((e) => {
           this.Error_Status = "true";
